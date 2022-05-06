@@ -1,7 +1,7 @@
 <!-- PROJECT HEADING -->
 <br />
 <p align="center">
-<a href="https://github.com/GSTT-CSC/CSC-QMS">
+<a href="https://github.com/GSTT-CSC/XNAT">
     <img src="https://raw.githubusercontent.com/GSTT-CSC/gstt-csc.github.io/main/assets/transparent-CSC-logo-cropped.png" alt="Logo" width="50%">
   </a>
 <h1 align="center">XNAT</h1>
@@ -159,7 +159,7 @@ Patient age, size, weight, ethnic group, smoking status and pregnancy status are
 
 <!-- ROADMAP -->
 ## Roadmap
-See the [open issues](https://github.com/XNAT/MLOps/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/GSTT-CSC/XNAT/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
