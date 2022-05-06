@@ -36,7 +36,17 @@ Tracked documentation on XNAT
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#overview">Overview</a></li>
+    <li>
+        <a href="#overview">Overview</a>
+        <ul>
+          <li><a href="#data-collection">Data collection</a></li>
+          <li><a href="#de-identification-teleradiology">De-identification via teleradiology</a></li>
+          <li><a href="#de-identification-qr">De-identification via Q/R</a></li>
+          <li><a href="#data-access-and-storage">Data access and storage</a></li>
+          <li><a href="#uploading-data">Uploading data to XNAT</a></li>
+          <li><a href="#scripts">Scripts</a></li>
+        </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -131,10 +141,10 @@ Before you start make yourself a cup of tea or get a snack, put on some soothing
 7. In the pre-archive, you can review the details of your import, such as files and DICOM tags. Once you’ve confirmed you’re happy with the data, select it in the pre-archive (tick the left-hand side checkbox) and select ‘Change projects’ on the right-hand side. Select your project. This will assign the data to your project. You can then ‘Archive’ it, which will move the data from the pre-archive into your project folder.
 8. You can now view, amend and interact with the data in the project (Browse -> My Projects -> your folder). You can check the DICOM tags of each data session (click on the Subject then hover over the scan details until 3 icons appear – the first is View Details, select this to view tags), you can view the session (click on ‘View Session’ on the right-hand side). You can also delete or download the images here or in the project details.
 
-## Scripts
+### Scripts
 Several scripts have been created to help with the data curation process and their development is ongoing. They can be grouped by the following categories representing steps in the overall process.
 
-### Anonymisation
+#### Anonymisation
 Patient age, size, weight, ethnic group, smoking status and pregnancy status are retained. Manufacturer private tags are removed by this script.  The manipulation of the DICOM data follows the [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf), which specifies which tags should be removed, replaced, or manipulated to ensure traceability to individual from the data shared is not possible. Some UIDs which do not contain any time of date data are also retained.
 
 * [Site-wide anonymisation script](assets/XNAT_anonymisation/Site-wide anon script.txt)
