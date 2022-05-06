@@ -1,0 +1,49 @@
+// GSTT XNAT anonymisation/de-identification script
+
+version "6.3"
+
+project != "Unassigned" ? (0008,1030) := project
+
+(0010,0010) := subject // Patient name is replaced with subjectID
+
+(0010,0020) := substring [(0010,0020), 14, 24] //patient ID is replaced with a subset of strings, for legibility and uniqueness
+
+(0008,0050) := concatenate[(0010,0020),"-",session] // Accession Number is replaced with XNAT sessionID
+(0020,0010) := concatenate[session,subject," Study")] // Study ID is replaced with XNAT sessionID
+
+
+// removal of private tags amended for XNAT 1.8.3
+delete["(2001,1100)"]
+delete["(2005,140F)"]
+delete["(2001,10CB)"]
+delete["(2001,9001"]
+
+delete["(0040,1001)"]
+delete["(0040,2004)"]
+
+delete["(0033,100E)"]
+delete["(0033,1013)"]
+// Commands for removing MRI-specific data in case it isn't removed at first iteration
+
+-(0040,0244) // Remove Procedure Step Start Date 
+-(0040,0245) // Remove Performed Procedure Step Start Time
+-(0040,0253) // Remove Performed Procedure Step ID 
+-(0040,0254) // Remove Performed Procedure Step Description
+-(0040,0275) // Remove Request Attribute Sequence 
+-(0054,0220) // Remove Code Sequence Attribute
+
+-(0008,0012) // Remove Referenced Texture Sequence Attribute
+-(0008,0013) // Remove Referenced Surface Data Sequence
+
+-(0008,1140) // Remove Referenced Image Sequence Attribute
+-(0070,0082) // Remove Presentation Creation Date
+-(0070,0083) // Remove Presentation Creation Time
+
+
+// Commands for removing PET-specific data in case it isn't removed at first iteration
+
+-(0054,0016) // Radiopharmaceutical details -- time and date
+
+//  Commands for removing DX-specific data in case it isn't removed at first iteration
+
+-(0054,0410) // Remove Context Group Version
