@@ -31,22 +31,14 @@ Tracked documentation on XNAT
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
     </li>
     <li>
         <a href="#overview">Overview</a>
         <ul>
           <li><a href="#data-collection">Data collection</a></li>
-          <li><a href="#de-identification-teleradiology">De-identification via teleradiology</a></li>
-          <li><a href="#de-identification-qr">De-identification via Q/R</a></li>
-          <li><a href="#data-access-and-storage">Data access and storage</a></li>
-          <li><a href="#uploading-data">Uploading data to XNAT</a></li>
+          <li><a href="#anonymisation">Anonymisation</a></li>
         </ul>
     </li>
-    <li><a href="#scripts">Scripts</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -70,12 +62,9 @@ This project aims to track general documentation, standard operating procedures 
 
 <!-- GETTING STARTED -->
 ## Getting Started
-<!-- PREREQUISITES -->
-### Prerequisites
-#### Access to XNAT
-Contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk).
+Contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) for access to XNAT. 
 
-#### Local installation of PuTTY and WinSCP
+We also recommend installing the following tools:
 * Download PuTTY [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 * Download WinSCP [here](https://winscp.net/eng/download.php)
 
@@ -99,6 +88,7 @@ Teleradiology is used for sending individual DICOM objects to XNAT. The sender m
 
 Q/R is used for importing batches of data. The data required can be manually searched by accession number, patient name, patient ID or the date range. Alternatively, the data can be requested by uploading a CSV file. The instructions on how to format the CSV file can be found [here](https://wiki.xnat.org/xnat-tools/dicom-query-retrieve-plugin/using-dqr-bulk-querying-and-importing-via-csv-file).
 
+<!-- DATA COLLECTION -->
 #### Data collection process
 > Before you start make yourself a cup of tea or get a snack, put on some soothing music or a podcast in the background. XNAT is slow and you will need to be patient with it else you will keep cancelling your own commands. Pop-ups can be slow and the amount of data moved takes much time. I recommend you start this at the end of the day instead of at the beginning and leave it to go over night to account for higher bandwidth demands on PACS during office hours.
 
@@ -142,6 +132,7 @@ The following image represents the data flow from within an NHS trust to their r
 
 The two methods of de-identification are outlined below.
 
+<!-- De-identification via teleradiology -->
 #### De-identification via teleradiology
 Teleradiology is used to send individual DICOM objects from PACS to XNAT. As the data leave PACS, the following text is automatically appended to two DICOM tags, i.e. the Patient Comment Field (0010,4000) and Study Comment Field (0032,4000): 
 
@@ -151,6 +142,7 @@ This ensures that the patient name and accession number do not reach XNAT’s Pr
 
 **Only individual scans should be sent via this route – for batches larger than 3 to 5 scans, please use Q/R**.
 
+<!-- De-identification via Q/R -->
 #### De-identification via Q/R
 When data is imported using Q/R functionalities of XNAT, new subject ID and session ID can be assigned to each scan imported. It's recommended a .csv is used for DQR upload, in which case the subject and session IDs can be specified in directly in the CSV file.
 
