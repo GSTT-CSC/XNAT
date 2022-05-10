@@ -70,13 +70,13 @@ We also recommend installing the following tools:
 
 <!-- OVERVIEW -->
 ## Overview
-XNAT is a virtual platform capable of storing and managing medical images and associated data. Within Guy’s and St Thomas’ NHS Foundation Trust (GSTT), it forms a part of the local secure enclave for the purpose of federated learning in artificial intelligence projects. The data is ingested from PACS into XNAT where it is anonymised and sorted into relevant projects, ensuring data is only visible to those who need it, and allowing for data deletion upon project completion. The following describes the process of data collection, anonymisation/de-identification and data storage in XNAT, as well as how compliance with [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf) is achieved.
+XNAT is a virtual platform capable of storing and managing medical images and associated data. Within Guy’s and St Thomas’ NHS Foundation Trust (GSTT), it forms a part of the local secure enclave for the purpose of federated learning in artificial intelligence projects. The data is ingested from PACS into XNAT where it is anonymised and sorted into relevant projects, ensuring data is only visible to those who need it, and allowing for data deletion upon project completion. The following describes the process of data collection, anonymisation (or more accurately, *de-identification*) and data storage in XNAT, as well as how compliance with [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf) is achieved.
 
 Medical imaging data is typically stored in a DICOM format. DICOM stands for *Digital Imaging and Communications in Medicine* and is an international standard format for medical image storage, retrieval, processing and transfer. DICOM images consist of the actual acquired image as a set of pixels and a DICOM header. Data coded within the DICOM header are a series of attributes describing the scan and patient. Each attribute is tagged with a unique DICOM tag which consists of a group and element number, and each tag has a name to identify the type of information (or attribute) contained within the tag. This principle of data tagging allows DICOMs to be compared, transferred, stored and queried.
 
-Before any medical data can be used in research or for training of artificial intelligence (AI) algorithms, it must first be completely anonymised/de-identified such that no data used can be traced back to any individual. To do this, the DICOM tags need to be altered, deleted or manipulated in such a way that the image no longer describes the individual. However, because there are many DICOM tags within a DICOM header and since what is and what is not identifiable information is not always straightforward, a [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf) was created. This outlines best anonymisation/de-identification practices for purposes of clinical trials and we have adopted this same standard for our anonymisation/de-identification approach.
+Before any medical data can be used in research or for training of artificial intelligence (AI) algorithms, it must first be completely anonymised/de-identified such that no data used can be traced back to any individual. To do this, the DICOM tags need to be altered, deleted or manipulated in such a way that the image no longer describes the individual. However, because there are many DICOM tags within a DICOM header and since what is and what is not identifiable information is not always straightforward, a [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf) was created. This outlines best de-identification practices for purposes of clinical trials, and we have adopted this same standard for our de-identification approach.
 
-Anonymisation/de-identification in XNAT is done at 2 levels; firstly, when data arrives into XNAT from PACS (site-wide anonymisation/de-identification) and secondly, when data is moved from the Pre-Archive into the assigned project (project-level anonymisation/de-identification).
+De-identification in XNAT is done at 2 levels; firstly, when data arrives into XNAT from PACS (site-wide de-identification) and secondly, when data is moved from the Pre-Archive into the assigned project (project-level de-identification).
 
 ### Data collection
 Data can be ingested into XNAT via two routes:
@@ -94,14 +94,13 @@ Q/R is used for importing batches of data. The data required can be manually sea
 
 1. Log into the GSTT network and open a browser.
 2. Go to https://sp-pr-flipml01.gstt.local and log in with your username. If you do not have a username, contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) to make one for you.
-3. If the project does not exist yet, contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) to create it. If you have any specific anonymisation requirements, please also let her know about them.
+3. If the project does not exist yet, contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) to create it. If you have any specific de-identification requirements, please also let her know about them.
 4. To open your project page, click on *Browse - My Projects* and select the project you are working with and this will open your project page. 
-   1. If you have a small number of scans to upload (<100), click on *Import From PACS* on the right-hand side. 
-   If you have a large cohort, we recommended using the REST API to perform the upload and so please speak to [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) about this process.
-5. If your dataset is reasonably small, use the data Q/R (DQR) route. Clicking on *Import from PACS* will open the DQR page which will allow you to query Sectra PACS for the requested images.
-   1. You can use the DQR in two ways:
-      1. By entering the search criteria
-      2. By importing a CSV file
+   * If you have a small number of scans to upload (<100), click on *Import From PACS* on the right-hand side. 
+   * If you have a large cohort, we recommended using the REST API to perform the upload and so please speak to [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) about this process.
+5. If your dataset is reasonably small, use the data Q/R (DQR) route. Clicking on *Import from PACS* will open the DQR page which will allow you to query Sectra PACS for the requested images. You can use the DQR in two ways: 
+   * By entering the search criteria
+   * By importing a CSV file
 
 ##### Entering the search criteria
 You can use accession number or patient ID, date range, `*` for wildcard. 
@@ -146,17 +145,17 @@ This ensures that the patient name and accession number do not reach XNAT’s Pr
 #### De-identification via Q/R
 When data is imported using Q/R functionalities of XNAT, new subject ID and session ID can be assigned to each scan imported. It's recommended a .csv is used for DQR upload, in which case the subject and session IDs can be specified in directly in the CSV file.
 
-In both of the above methods, all other data in the DICOM headers is removed, changed or replaced as detailed in the anonymisation/de-identification scripts, such as:
+In both of the above methods, all other data in the DICOM headers is removed, changed or replaced as detailed in the de-identification scripts, such as:
 
 * Patient age, size, weight, ethnic group, smoking status and pregnancy status are retained 
 * Manufacturer private tags are removed
 * Some UIDs which do not contain any time of date data are also retained
 
-The manipulation of the DICOM data follows the [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf), which specifies which tags should be removed, replaced, or manipulated to ensure traceability to individual from the data shared is not possible.
+The manipulation of the DICOM data for the purpose of de-identification follows the [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf), which specifies which tags should be removed, replaced, or manipulated to ensure traceability to individual from the data shared is not possible.
 
-* [Site-wide anonymisation script](assets/XNAT_anonymisation/Site-wide anon script.txt)
+* [Site-wide anonymisation script](https://github.com/GSTT-CSC/XNAT/blob/main/anonymisation/Site-wide%20anon%20script.txt)
 
-* [Project-level anonymisation script](assets/XNAT_anonymisation/Project-specific anon script.txt)
+* [Project-level anonymisation script](https://github.com/GSTT-CSC/XNAT/blob/main/anonymisation/Project-specific%20anon%20script.txt)
 
 ### Data access and storage
 The project owner has the reading, writing, updating and deleting rights of all data they own. They can grant access to other users to either view-only or modify the existing data. Data can also be shared between projects as read-only.
