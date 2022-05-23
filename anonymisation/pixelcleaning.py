@@ -13,7 +13,7 @@ if len(sys.argv) != 2:
 base = sys.argv[1]
 
 client = DicomCleaner() # do we need to define this before the below?
-client = DicomCleaner(base + '/iFINDclean/')
+client = DicomCleaner(base + '/clean/')
 
 ext = ('.dcm')
 dicom_files = []
