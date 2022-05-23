@@ -5,6 +5,7 @@
 // It aims to de-identify all DICOM data uploaded to XNAT.
 // It retains patients age, size, weight, ethnic group, smoking status, pregnancy status and sex neutered status.
 // The manufacturer-specific DICOM data is not altered by this script.
+// Radiothreapy
 
 version "6.3"
 
