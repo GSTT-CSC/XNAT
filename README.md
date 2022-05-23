@@ -59,14 +59,13 @@ This project aims to track general documentation, standard operating procedures 
 * [Grassroots DICOM (GDCM)](https://gdcm.sourceforge.net/) C++ library for DICOM and ACR-NEMA medical images, which is automatically wrapped to Python, C#, Java and PHP (using [SWIG](https://www.swig.org/))
 * [Midnight Commander](https://midnight-commander.org/) Visual file manager, which is licensed under GNU General Public License
 * [PuTTY](https://www.putty.org/) Terminal emulator, serial console and network file transfer application, which supports several network protocols, including SCP, SSH, Telnet, rlogin, and raw socket connection
+* [WinSCP](https://winscp.net/eng/download.php) Free SFTP, SCP, S3 and FTP client for Windows
+  * If you are working on a remote environment that requires elevated privileges to install 3rd party software, download the [portable executable version](https://winscp.net/eng/downloads.php). 
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
-Contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) for access to XNAT. 
-
-We also recommend installing the following tools:
-* Download PuTTY [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-* Download WinSCP [here](https://winscp.net/eng/download.php)
+Contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) for access to XNAT.
 
 <!-- OVERVIEW -->
 ## Overview
@@ -117,11 +116,11 @@ You can use accession number or patient ID, date range, `*` for wildcard.
 5. Click on *Close*. **You will need to upload the CSV again to select the next batch for import**.
 
 After following either of the above two data retrieval methods, you will need to:      
-6. Click on *Upload - Go to prearchive* to see the imported data. 
-7. Click *Refresh* if your data does not appear, or click on *Upload - Import Queue/History* as the data may take a while to transfer.
-8. In the Pre-archive, you can review the details of your import, such as files and DICOM tags. Once you have confirmed you are happy with the data, select it in the Pre-archive by ticking the left-hand side checkbox.
-9. Click on *Change projects* on the right-hand side and select your project. This will assign the data to your project, and you can then click to *Archive* it. This will move the data from the Pre-archive into your project folder.
-10. You can now view, amend and interact with the data in the project *Browse - My Projects - your project folder*. You can check the DICOM tags of each data session by clicking on the *Subject* and hovering over the scan details until three icons appear, i.e. *View Details* to view tags, *View Session* to view the session, etc. You can also delete or download the images here or in the project details.
+1. Click on *Upload - Go to prearchive* to see the imported data. 
+2. Click *Refresh* if your data does not appear, or click on *Upload - Import Queue/History* as the data may take a while to transfer.
+3. In the Pre-archive, you can review the details of your import, such as files and DICOM tags. Once you have confirmed you are happy with the data, select it in the Pre-archive by ticking the left-hand side checkbox.
+4. Click on *Change projects* on the right-hand side and select your project. This will assign the data to your project, and you can then click to *Archive* it. This will move the data from the Pre-archive into your project folder.
+5. You can now view, amend and interact with the data in the project *Browse - My Projects - your project folder*. You can check the DICOM tags of each data session by clicking on the *Subject* and hovering over the scan details until three icons appear, i.e. *View Details* to view tags, *View Session* to view the session, etc. You can also delete or download the images here or in the project details.
 
 
 ### Anonymisation
