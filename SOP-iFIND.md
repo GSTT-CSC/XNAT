@@ -142,7 +142,6 @@ As the files are quite large, you have the option of either downloading them in 
 ### Checking the data
 IN PROGRESS
 
-> This is the point where extra care is taken. Once you've sent the data.
 <!-- SENDING THE DATA -->
 ### Sending the data
 IN PROGRESS
