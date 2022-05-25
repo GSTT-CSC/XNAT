@@ -1,0 +1,145 @@
+<!-- PROJECT HEADING -->
+<br />
+<p align="center">
+<a href="https://github.com/GSTT-CSC/XNAT">
+    <img src="https://raw.githubusercontent.com/GSTT-CSC/gstt-csc.github.io/main/assets/transparent-CSC-logo-cropped.png" alt="Logo" width="50%">
+  </a>
+<h1 align="center">Data Import</h1>
+<p align="center">
+This SOP identifies and explains the process of data import in XNAT. For any further information please contact Dika or Haleema.
+<br />
+
+<br />
+<a href="https://github.com/GSTT-CSC/XNAT">View repo</a>
+·
+<a href="https://github.com/GSTT-CSC/XNAT/issues">Report Error</a>
+·
+<a href="https://github.com/GSTT-CSC/XNAT/issues">Request Feature</a>
+·
+<a href="https://github.com/GSTT-CSC/XNAT/issues">Request Document</a>
+</p>
+
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <ol>
+    <li>
+      <a href="#overview">Overview</a>
+      <ul>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#subjects">Subjects</a></li>
+        <li><a href="#sessions">Sessions</a></li>
+        <li><a href="#longitudional">Importing longitudional data</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#direct-import">Direct import</a>
+      <ul>
+        <li><a href="#ui">User interface</a></li>
+        <li><a href="#restapi">RestAPI</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#script-import">Importing with scripts</a>
+      <ul>
+        <li><a href="#mris">Importing MRI images</a></li>
+        <li><a href="#other-imaging-data">Importing other imaging data (non-MRI and non-complex data)</a></li>
+        <li><a href="#foetal-cardiology-ultrasounds">Importing ultrasounds from ISCV</a></li>
+        <li><a href="#complex-data">Importing complex data</a></li>
+      </ul>
+    </li>
+    <li><a href="#mris">Importing MRIs</a></li>
+    <li><a href="#other-imaging-data">Importing other imaging data (non-MRI & non-complex data)</a></li>
+    <li><a href="#foetal-cardiology-ultrasounds">Importing ultrasounds from ISCV</a></li>
+    <li><a href="#complex-data">Importing other complex data</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+   <li><a href="#acknowledgements">Acknowledgements</a></li>
+  </ol>
+</details>
+
+<!-- Overview -->
+## Overview
+
+A PACS, which stands for Picture Archiving and Communication Systems, is any system which holds and catalogues images in a way which is economical (usually compressed) 
+and practical (searchable). The main radiology PACS at GSTT is a Sectra system - radiological systems such as X-ray machines, gamma cameras and PET scanners, MRI scanners
+and CT scanners, all feed the images they acquire into this main system in DICOM format. The PACS assigns each DICOM an accession number which
+uniquely identifies the image in this specific PACS, and organises the images such that ownership of each image is assigned to a patient. This allows us to look up a patient 
+on a PACS system and find all the images that PACS has ever received for that patient ID. Sectra is not the only PACS in use at GSTT, as other departments also
+use imaging scanners and may have local PACS systems to organise their own data (for example, foetal cardiology uses ISCV, cardiology uses CVIS, radiotherapy uses ARIA and so on).
+
+XNAT is a PACS system designed with clinical trials in mind. It expects DICOM data, organises it by subject and assigns each DICOM a unique XNAT number. 
+The main difference between XNAT and a standard clinical PACS is that it organises data into projects (as it was designed for research, not routine care),
+and that it allows much, much greater flexibility than a standard clinical PACS: particularly in terms of anonymisation and post-processing.
+
+At GSTT we use XNAT to sufficiently anonymise all images we intend to use for research (within and outside of the hospital) and for service improvement and evaluation. We also
+use it to remove the images from the clinical systems in a way which is safe and can never affect a clinical system - the data retrieval is one-directional. Other benefits of XNAT
+lie in its powerful RestAPI (meaning many tasks can be automated) and it its container service, which allows us to program and plug in other processing tools, such as facemasking.
+
+The problem with XNAT, however, is that as it was designed for clinical trials, it expects clean data which are well organised, consistent in size and in naming. Routine clinical data 
+is anything but that - you will find, especially with MRIs, a myriad of variance in this, some will have extra images, some will have fewer, sometimes some sequences are added, some
+data arrives from other hospitals and hides different information it tags, some will be strangely large for no real reasons, some will have Sectra-specific fragments of files attached.
+
+To navigate this difficulty and still achieve scalability in our data exports and processing for research purposes, a few solutions have been created. Each have their own advantages
+and disadvantages and caution and care must be taken when choosing which one to go with. If in any doubt, speak to Haleema or Dika or discuss it with the rest of the team. The consequence
+of getting it wrong is mostly in the loss of time and many lessons were learned through trial and error. Similarly, if any strange behaviour is noticed, please let us know!
+
+
+<!-- PROJECTS-->
+### Projects
+
+<!-- SUBJECTS -->
+### Subjects
+
+<!-- SESSIONS -->
+### Sessions
+
+<!-- LONGITUDIONAL -->
+### Importing longitudional data
+
+<!-- DIRECT IMPORT -->
+## Direct Import
+
+<!-- UI -->
+### User interface
+
+<!-- RestAPI -->
+### Rest API
+
+<!-- SCRIPT IMPORT -->
+## Importing with scripts
+
+<!-- MRIS -->
+### Importing MRIs
+
+<!-- OTHER IMAGING DATA -->
+### Importing other imaging data (non-MRI & non-complex data)
+
+<!-- FOETAL CARDIOLOGY ULTRASOUNDS -->
+### Importing ultrasounds from ISCV
+
+<!-- COMPLEX DATA -->
+## Importing complex data
+
+<!-- RESOURCES -->
+## Resources
+* [XNAT](https://www.xnat.org/)
+* [DICOM Standards Supplements](https://www.dicomstandard.org/supplements)
+
+<!-- ROADMAP -->
+## Roadmap
+See the [open issues](https://github.com/GSTT-CSC/XNAT/issues) for a list of proposed features (and known issues).
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+<!-- CONTACT -->
+## Contact
+
+* [Dika Vilic](mailto:Dijana.Vilic@gstt.nhs.uk) ([GSTT-CSC](https://gstt-csc.github.io/))
+* [Haleema Al Jazzaf](mailto:Haleema.AlJazzaf@gstt.nhs.uk) ([GSTT-CSC](https://gstt-csc.github.io/))
+* [Project Link](https://github.com/GSTT-CSC/XNAT)
+
+
