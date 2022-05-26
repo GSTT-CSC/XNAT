@@ -188,16 +188,64 @@ If they do not appear there, something has gone wrong. Please try again or seek 
 
 This method is useful for approximately 50 or so scans at a time. More than that and it will time out. This method is also prone to failure of import of individual scans, 
 particularly as too many items in the queue jam the Sectra port and the connection is lost until the jam is cleared which depends on size of data already in queue. 
-If your dataset is bigger or more complex, we need to use the scripts. 
+If your dataset is bigger or more complex, we need to use the scripts. Proceed with absolute caution and do not attempt this unless fully trained to do so though, 
+as scripts are run on the head node with root privileges and thus the potential for disaster is substantial.
 
 <!-- SCRIPT IMPORT -->
 ## Importing with scripts
 
+There are two main scripts currently in use for bulk import: one using DCMTK and the other using the RestAPI. The one that uses RestAPI (currently named import-tester) essentially
+follows the steps listed above, except that instead of setting off a list of studies at once it tries to queue one at a time with 1 minute between, and if the PACS connection is lost
+or the scan fails to import for another reason it will try again 50 times before it moves onto the next one. This was designed specifically to overcome congestion issues. The dcmtk script,
+currently named test_qr, does not use XNAT but instead queries the PACS directly, ingests the data, and then pushes that data to XNAT without getting XNAT involved. This was designed to overcome
+the issues of MRI imaging sessions not arriving into XNAT completed.
+
+The import-tester will be quicker in retrieving your data, but may return incomplete results if what you're fetching are MRIs. It's fine for most other imaging modalities.
+The test_qr is slower but more robust. It is particularly useful for MRIs. Proceed with caution, seek advice if in doubt, and do not do this unless you have been trained to do so 
+or are being supervised by an XNAT superuser.
+
 <!-- MRIS -->
-### Importing MRIs
+### Importing MRIs (test_qr)
+
+Because the script developed for MRI ingestion uses DCMTK and not XNAT, you'll first need to change the PACS receiver. 
+To do this, log into the server via Putty as hnadmin. Input the address (sp-pr-flipml01) and the credentials to gain access. 
+Navigate to /home/hnadmin/xnat-setup/ then type in ``sudo mc`` and navigate to ``docker-compose.yml`` using keyboard arrows and then
+press F4 - this will open the yaml file for editing. Comment out the line that says ``105:8105`` using ``#``. This command effectively opens the port for XNAT
+and closes it for other processes, so when you blank it out of the yaml file, it frees it up again. This is the port that Sectra is connected to. This
+is currently the only PACS this script has been designed for, so if you need data from a different PACS, speak to Dika or Haleema.
+
+After you've changed the docker compose, you must restart XNAT for changes to take effect. To do this, close the midnight commander (using F10), then 
+navigate into /home/hnadmin/xnat-setup/Linux and run ``sudo ./restart.sh``. 4 processes will close, then 3 will be re-instigated. Once it's done,
+you can check if all has been restored successfully with ``docker ps`` - there should be 3 processes that will have been restarted less than a minute ago (nginx, postgres for xnat and xnat).
+
+Now you need to get you csv onto the server. This script ONLY WORKS WITH ACCESSION NUMBERS - patient ID & study date won't work here. You can 
+use your patient ID & study date combo to query PACS in the RestAPI (when the correct receiver is on, of course) and get accession numbers that way.
+
+You can either put the csv onto dropbox or use WinSCP on your GSTT desktop to do this. If you put it on your desktop,
+navigate to /home/hnadmin/test_qr and put the file there using either WinSCP or by typing in ``wget https://www.dropbox.com/YOUR_FILE_URL``. Once the folder is in, 
+obtain root rights by running ``sudo -i`` followed by admin password. You'll now be signed in as <b>root</b>. Now navigate to the test_qr folder (``cd /home/hnadmin/test_qr/``) 
+then run 
+
+``nohup /bin/bash dqr.sh CSV_NAME.csv PROJECT_ID``
+
+The process will start. nohup is a text file which will have outputs of what is happening and you can open it win WinSCP. It should be listing one accession 
+number at a time and its corresponding studyUID. If you see anything else there may have been an error. 
+
+The process will now run until it is done - this may take a few hours or a few days, depending on the size of your csv. You can close Putty now, the process will continue.
+
+If you want to check if the process is still running, run
+
+``ps aux | grep dqr``
+
+You'll see the process you initiated listed there. If you need to end it, use 
+
+``kill PROCESS ID`` [process ID is the 7 digit number in the second column].
+
+It will take some time before the images begin to appear in XNAT - they will appear in prearchive, probably one at a time. If they do not begin to appear within half an hour, 
+there is likely to have been an error: consult your XNAT superusers, the nohup text file and kill and restart the process if need be.
 
 <!-- OTHER IMAGING DATA -->
-### Importing other imaging data (non-MRI & non-complex data)
+### Importing other imaging data (non-MRI & non-complex data - import_tester)
 
 <!-- FOETAL CARDIOLOGY ULTRASOUNDS -->
 ### Importing ultrasounds from ISCV
