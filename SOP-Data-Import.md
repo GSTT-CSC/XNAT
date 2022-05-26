@@ -243,13 +243,44 @@ there is likely to have been an error: consult your XNAT superusers, the nohup t
 <!-- OTHER IMAGING DATA -->
 ### Importing other large imaging data
 
-This script is simpler
+This script is simpler than test_qr and you do not need root access to run it. This script uses XNAT Rest APi so the receiver must be set
+such that ``105:8105`` is enabled. If that is not the case, follow the procedure as described in the previous section except delete the ``#`` in front of 
+``105:8105`` in the docker compose instead of adding it. Then restart xnat.
+
+For this script you need to put your csv into ``/home/xnat-data/xnat/scripts/import-dqr/`` folder. You can either use WinSCP to get it there or 
+use ``wget`` as described in the previous section. Then type in ``cd`` which will take you back to hnadmin home, then run
+
+``./import-tester.sh CSV_NAME.csv PROJECT_ID PACS_ID MODALITY``
+
+Where 'modality' is whatever the main modality in your dataset is. Once you press enter to run it, you'll see the screen become populated
+with the contents of your csv file (accession numbers, subject ids, session ids). Please note that this may take a while if you have a very large file (e.g. 1000 ultrasounds).
+Then it will begin the import one at a time. It will print each as it tries to import it onto the screen. You will see errors come up if there are issues.
+Please note that this script uses Rest API and thus suffers from the same PACS congestion issue as Rest API scheduling, but this script will try and import each scan for up to 50 times until
+it is successfully queued. 
+
+You can end this process by pressing ``command + c``. If you want it to continue to run but you want to exit Putty, simply close the Putty window down - the downloads will continue.
 
 <!-- FOETAL CARDIOLOGY ULTRASOUNDS -->
 ### Importing ultrasounds from ISCV
 
+ISCV is a PACS which is in use for foetal cardiology at GSTT. It differs from Sectra in a few ways but most important one is that accession numbers are not a part
+of ISCV in the same way as they are to Sectra - there are faux accession numbers that you will see if you try and import some data but they consist of the date of scan and some
+other numbers and are not reliably useful for data fetching. Instead, patient ID and study date must be used to locate images. PACS id for ISCV is 2.
+
+To downloads ISCV data in bulk, first upload your csv file to ``/home/xnat-data/xnat/scripts/import-dqr/`` as above. Then run
+
+``./import-tester-ISCV.sh CSV_NAME.csv PROJECT_ID 2 US``
+
+You should see the same outputs on your screen as when you use import-tester script. If there is an issue an error will be shown on the screen. Sometimes
+an error arises from empty spaces in the Excel file before 'patient ID' - these aren't visible in Windows but are visible to a Unix system. If you see ``\f`` or similar being
+output onto your screen and the images are failing one after the other, kill the process (``command + c ``) and fix your csv file through the midnight commander 
+(``sudo mc -> navigate to csv -> select csv using keyboard arrows -> F4 -> delete the characters before P in Patient ID -> F2 to save -> F10 to exit``) and run the process again.
+
 <!-- COMPLEX DATA -->
 ## Importing complex data
+
+If you have a need for other complex data, such as very heavy data or something XNAT has not yet been optimised for (e.g. raw PET images, CBCT, Aria plans), 
+please speak to Haleema or Dika to discuss how best approach the task at hand, especially if the above solutions are not appropriate.
 
 <!-- RESOURCES -->
 ## Resources
