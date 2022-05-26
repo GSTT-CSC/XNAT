@@ -29,7 +29,7 @@ This SOP identifies and explains the process of data import in XNAT. For any fur
         <li><a href="#projects">Projects</a></li>
         <li><a href="#subjects">Subjects</a></li>
         <li><a href="#sessions">Sessions</a></li>
-        <li><a href="#longitudional">Importing longitudional data</a></li>
+        <li><a href="#Importing-longitudional-data">Importing longitudional data</a></li>
       </ul>
     </li>
     <li>
