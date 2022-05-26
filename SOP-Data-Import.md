@@ -247,6 +247,8 @@ there is likely to have been an error: consult your XNAT superusers, the nohup t
 <!-- OTHER IMAGING DATA -->
 ### Importing other imaging data (non-MRI & non-complex data - import_tester)
 
+This script is simpler
+
 <!-- FOETAL CARDIOLOGY ULTRASOUNDS -->
 ### Importing ultrasounds from ISCV
 
