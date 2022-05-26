@@ -35,23 +35,19 @@ This SOP identifies and explains the process of data import in XNAT. For any fur
     <li>
       <a href="#direct-import">Direct import</a>
       <ul>
-        <li><a href="#ui">User interface</a></li>
-        <li><a href="#restapi">RestAPI</a></li>
+        <li><a href="#User-interface">User interface</a></li>
+        <li><a href="#Rest-API">RestAPI</a></li>
       </ul>
     </li>
     <li>
-      <a href="#script-import">Importing with scripts</a>
+      <a href="#Importing-with-scripts">Importing with scripts</a>
       <ul>
-        <li><a href="#mris">Importing MRI images</a></li>
-        <li><a href="#other-imaging-data">Importing other imaging data (non-MRI and non-complex data)</a></li>
-        <li><a href="#foetal-cardiology-ultrasounds">Importing ultrasounds from ISCV</a></li>
-        <li><a href="#complex-data">Importing complex data</a></li>
+        <li><a href="#Importing-MRI-images">Importing MRI images</a></li>
+        <li><a href="#Importing-other-large-imaging-data">Importing other large imaging data</a></li>
+        <li><a href="#Importing-ultrasounds-from-ISCV">Importing ultrasounds from ISCV</a></li>
+        <li><a href="#Importing-complex-data">Importing complex data</a></li>
       </ul>
     </li>
-    <li><a href="#mris">Importing MRIs</a></li>
-    <li><a href="#other-imaging-data">Importing other imaging data (non-MRI & non-complex data)</a></li>
-    <li><a href="#foetal-cardiology-ultrasounds">Importing ultrasounds from ISCV</a></li>
-    <li><a href="#complex-data">Importing other complex data</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -205,7 +201,7 @@ The test_qr is slower but more robust. It is particularly useful for MRIs. Proce
 or are being supervised by an XNAT superuser.
 
 <!-- MRIS -->
-### Importing MRIs (test_qr)
+### Importing MRI Images
 
 Because the script developed for MRI ingestion uses DCMTK and not XNAT, you'll first need to change the PACS receiver. 
 To do this, log into the server via Putty as hnadmin. Input the address (sp-pr-flipml01) and the credentials to gain access. 
@@ -245,7 +241,7 @@ It will take some time before the images begin to appear in XNAT - they will app
 there is likely to have been an error: consult your XNAT superusers, the nohup text file and kill and restart the process if need be.
 
 <!-- OTHER IMAGING DATA -->
-### Importing other imaging data (non-MRI & non-complex data - import_tester)
+### Importing other large imaging data
 
 This script is simpler
 
