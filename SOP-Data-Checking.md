@@ -59,13 +59,48 @@ and service improvement and evaluation processes.
 <!-- PII -->
 ### PII
 
+Personal identifiable information (PII) is any information that can directly or indirectly identify an individual from
+their data. Examples of directly identifiable data are first and last name, date of birth, or a home address. Examples of 
+indirectly identifiable data are date of scan, diagnosis, first half of postcode. 
+
+All PII from medical images must be removed before the images can be used for research. This protects the identity of the individuals 
+imaged and it is our legal and moral duty to our service users not to divulge their personal data nor abuse our access to it.
+The anonymisation must therefore be sufficient to achieve the goal of separating the individual from their data in a manner which ensures
+no link can be re-established between the two. 
+
+National Data Opt Out (NDOO) further ensures that service users have a right to withdraw their consent to any of their medical data being
+used for research or service development. Their data must therefore be excluded. For more details on this speak to Haleema or Dika. 
 
 <!-- DICOM TAGS -->
 ## DICOM Tags
 
+DICOM is a data format and a networking protocol used in medical imaging. Each DICOM file holds information on the person in the image (PII) and
+information about the scan itself (e.g. equipment, imaging protocol, time and date of scan), and the information which forms the image (a set of pixel
+data and a decoder of the pixel data). The data are contained in DICOM tags. Each tag is labelled (e.g. (0008,0010)) by what data it represents. This
+allows for integration across systems and ensures data can be filtered, found, and communicated between hospitals. 
+
+The DICOM tags contain direct and indirect PII and therefore must be manipulated to achieve our goal of separating the individual from the data. In XNAT
+we do this using a script, written in DicomEdit, which outlines all DICOM tags which need to be removed (e.g. patient name) or changed to mask the true data (e.g. 
+dates are shifted by a fixed number of days). However, manufacturers frequently add additional data in some tags (called Private Tags) and not all modalities 
+use the same tags (for example: a nuclear medicine DICOM file will contain information on the radiopharmaceutical used and the activity injected, which an X-ray will not,
+and similarly a CT scan will have details on radiation beam used to acquire the image while an MRI will hold data on pulse sequence used). This means that 
+for some data the script we use is not optimised. Because of this, DICOM tags must be checked on a representative subset of data before the total set is ingested.
+
+To do this, first ingest a few scans (I recommend around 3 per modality) into XNAT and check the DICOM tags. To do this, open the project to 
+which you archive the data, then open the subject, then open the experiment you wish to check. Hover your mouse just right of the scan number (middle of the page where
+all scans are listed in a numbered order). 3 icons will appear, select the 'view details', then 'view DICOM headers. A window will open 
+and you'll see all the DICOM tags pertaining to that scan. Look through them and pay careful attention to presence of dates, names, postcodes, accession numbers and patient IDs.
+The dates should be delayed by a few days from what the scan was originally but they should be consistent across the whole header. There should be no names, no postcodes, and no accession numbers
+remaining in the header.
+
+Once you have confirmed that the anonyisation script was adequate for your project, you can ingest the rest of the data. If you find errors, you need to amend
+the script and try again. If you need help with this, please speak to Dika or Haleema.
 
 <!-- BURNT-IN DATA -->
 ## Burnt-in data
+
+Burnt-in data are PII data which are part of the actual image. They are especially common in ultrasounds, but also in CT's patient protocols and dose reports.
+Annotations are also common and may also constitute PII. 
 
 
 <!-- ULTRASOUNDS -->
@@ -75,6 +110,8 @@ and service improvement and evaluation processes.
 <!-- Patient Protocols and Dose Reports -->
 ### Patient Protocols and Dose Reports
 
+Patient protocols and dose reports should not be ingested or should not be forwarded externally. For removal of burnt-in data, you will need to use pixelcleaning.py 
+script and deid pydicom package. This is described in SOP-iFIND and should work on all burnt-in data but as always - check first!
 
 <!-- SCREENSHOTS -->
 ### Screenshots
