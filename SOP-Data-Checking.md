@@ -106,29 +106,44 @@ Annotations are also common and may also constitute PII.
 <!-- ULTRASOUNDS -->
 ### Ultrasounds
 
+All ultrasounds data have burnt-in data which needs to be removed. If you have only static images, you can use pixelcleaning.py script for banner removal.
+If you have cine images as well (which is usually the case), you'll need to decompress them first, then run the python script, then recompress. Please follow the SOP-iFIND!
 
 <!-- Patient Protocols and Dose Reports -->
 ### Patient Protocols and Dose Reports
 
-Patient protocols and dose reports should not be ingested or should not be forwarded externally. For removal of burnt-in data, you will need to use pixelcleaning.py 
+Patient protocols and dose reports should not be ingested or should not be forwarded externally. You can filter them out at ingestion into XNAT or at 
+the downloading stage. If you do need them, for removal of burnt-in data, you will need to use pixelcleaning.py 
 script and deid pydicom package. This is described in SOP-iFIND and should work on all burnt-in data but as always - check first!
 
 <!-- SCREENSHOTS -->
 ### Screenshots
 
+Screenshots and screengrabs frequently contain PHI, especially in modalities such as PET and nuclear medicine. Check whether these are actually needed 
+for your project and if not filter them out in the same way you filter out dose reports and patient protocols. If you do need them, you can either
+manually remove the PHI using any image processor or a Python script to crop the PHI out of the shot.
 
 <!-- Annotations -->
 ### Annotations
 
+Annotations may also contain PHI - but not always. If your dataset is annotated, please speak to the project owner and whoever annotated the images
+to find out if the data is or is not PHI. Annotations are frequently added as overlays and may be 'turned off', but if they are merged with the DICOM, the removal
+task may be more complex. In cases where the annotations are merged with DICOM, annotation-free DICOMs should also exist: ensure you only ingest or download those. 
 
 <!-- Miscellaneous -->
 ### Miscellaneous
 
+Sometimes other data may also be found - pdfs, PACS fragments you can't open, occasional note named after the patient, and the DICOM tags may
+sometimes (rarely) contain entire clinical reports. It's important to spot check for these in your dataset, but it is not realistic to check each scan 
+individually. If you see anything that doesn't look like it belongs in the imaging session, delete it; and pay attention when downloading data where the series
+names are listed and ensure you don't download anything that contains PHI.
 
 <!-- HIGH DEFINITION FACES -->
 ## High-definition Faces
 
-
+Only head MRIs are considered to have sufficient resolution for face rendering (and what's more identifiable than a face?), so you don't 
+have to worry about head CTs. All high definition face images must be post-processed with facemasking. To learn how to do this, please 
+have a look at the Facemasking SOP.
 
 <!-- RESOURCES -->
 ## Resources
