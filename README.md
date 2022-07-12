@@ -91,7 +91,7 @@ Q/R is used for importing batches of data. The data required can be manually sea
 #### Data collection process
 > Before you start make yourself a cup of tea or get a snack, put on some soothing music or a podcast in the background. XNAT is slow and you will need to be patient with it else you will keep cancelling your own commands. Pop-ups can be slow and the amount of data moved takes much time. I recommend you start this at the end of the day instead of at the beginning and leave it to go over night to account for higher bandwidth demands on PACS during office hours.
 
-1. Log into the GSTT network and open a browser.
+1. Log into the GSTT network and open Chrome (it won't work well on Edge and it hasn't been tested on Mozilla).
 2. Go to https://sp-pr-flipml01.gstt.local and log in with your username. If you do not have a username, contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) to make one for you.
 3. If the project does not exist yet, contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) to create it. If you have any specific de-identification requirements, please also let her know about them.
 4. To open your project page, click on *Browse - My Projects* and select the project you are working with and this will open your project page. 
