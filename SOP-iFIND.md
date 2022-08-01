@@ -2,7 +2,7 @@
 <br />
 <p align="center">
 <a href="https://github.com/GSTT-CSC/XNAT">
-    <img src="https://raw.githubusercontent.com/GSTT-CSC/gstt-csc.github.io/main/assets/transparent-CSC-logo-cropped.png" alt="Logo" width="50%">
+    <img src="https://github.com/GSTT-CSC/gstt-csc.github.io/blob/gh-pages/assets/img/transparent-CSC-logo.png" alt="Logo" width="50%">
   </a>
 <h1 align="center">iFIND</h1>
 <p align="center">
