@@ -69,7 +69,19 @@ The anonymisation must therefore be sufficient to achieve the goal of separating
 no link can be re-established between the two. 
 
 National Data Opt Out (NDOO) further ensures that service users have a right to withdraw their consent to any of their medical data being
-used for research or service development. Their data must therefore be excluded. For more details on this speak to Haleema or Dika. 
+used for research or service development, i.e. secondary purposes. If they do have a recorded opt-out status, their data must therefore be excluded.
+
+Within Guy's and St Thomas' NHS Foundation Trust (GSTT), the currently most straightforward way to check the opt-out statuses is to do so via the [NDOO Check Service](https://optout.gstt.nhs.uk/#/login) web application. This can only be accessed by staff with valid GSTT email addresses and whilst on the Trust VPN. 
+
+Users can either manually input one or more NHS numbers on the website itself, or they can submit a CSV file containing up to 100,000 NHS numbers per request.
+
+Based on their submissions, users will then receive a response file (to the email address provided in the original submission) containing the NHS numbers of patients who have **not** opted out and whose data may be included.
+
+> :warning: **Users should not be maintaining a record of the patients who have opted out!** Please take care in only using the response file for the purpose of complying the NDOO policy and adhering to the data retention policy as outlined in the project's Data Protection Impact Assessment (DPIA).
+
+If, however, there are any project-specific patient opt-in processes users believe may take precedence over the NDOO policy, please reach out to the Information Governance team for their further advice.
+
+For more details on the NDOO Check Service or ongoing work to directly query NHS Digital's NDOO database via their API, please reach out to [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk) or [Dika](mailto:mailto:Dijana.Vilic@gstt.nhs.uk). 
 
 <!-- DICOM TAGS -->
 ## DICOM Tags
@@ -94,7 +106,7 @@ The dates should be delayed by a few days from what the scan was originally but 
 remaining in the header.
 
 Once you have confirmed that the anonyisation script was adequate for your project, you can ingest the rest of the data. If you find errors, you need to amend
-the script and try again. If you need help with this, please speak to Dika or Haleema.
+the script and try again. If you need help with this, please speak to [Dika](mailto:mailto:Dijana.Vilic@gstt.nhs.uk) or [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk).
 
 <!-- BURNT-IN DATA -->
 ## Burnt-in data
