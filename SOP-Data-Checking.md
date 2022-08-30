@@ -42,6 +42,7 @@ and service improvement and evaluation processes.
       </ul>
     </li>
     <li><a href="#high-definition-faces">High definition faces</a></li>
+    <li><a href="#project-contents">Project contents</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -158,6 +159,23 @@ names are listed and ensure you don't download anything that contains PHI.
 Only head MRIs are considered to have sufficient resolution for face rendering (and what's more identifiable than a face?), so you don't 
 have to worry about head CTs. All high definition face images must be post-processed with facemasking. To learn how to do this, please 
 have a look at the Facemasking SOP.
+
+<!-- PROJECT CONTENTS -->
+## Project Contents
+
+There are two ways to check the contents of your project, depending on what you need. 
+
+To count sessions open your project in XNAT and in the right hand corner of the section 'Subjects' there are two buttons: 
+'Reload' and 'Options'. Click 'Options' and select 'Spreadsheet'. This will download a spreadsheet with a list of all subjects and the number of sessions held for each subject.
+
+To get a list of all session names contained in the project, write the following into your browser:
+
+``https://sp-pr-flipml01.gstt.local/REST/projects/PROJECT NAME/experiments``
+
+substituting PROJECT NAME with the ID of your project (found on the landing page of your project in the Details section under ID:).
+This will open a html site of all experiments contained in the project. Copy the contents into a text file, save it, then open it in Excel. 
+Text Import Wizard will appear - select Delimited, click Next, then put a tick in the Tab checkbox and click Finish. You should get an easy-to-use spreadsheet
+of sessions contained, the date of each session and the upload date.
 
 <!-- RESOURCES -->
 ## Resources
