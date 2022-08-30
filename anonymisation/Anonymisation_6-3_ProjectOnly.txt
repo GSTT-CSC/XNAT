@@ -1,19 +1,24 @@
 // GSTT XNAT anonymisation/de-identification script
-// Copyright (c) 2022, Guys and St Thomas NHS Trust
+// Copyright (c) 2021, Guys and St Thomas NHS Trust
 // All Rights Reserved
+// This  script was written in August 2020 to suit the needs of GSTT and conforms to the Dicom Supplement 142.
 // It aims to de-identify all DICOM data uploaded to XNAT.
 // It retains patients age, size, weight, ethnic group, smoking status, pregnancy status and sex neutered status.
+// The manufacturer-specific DICOM data is not altered by this script.
 
 version "6.3"
 
 retainPrivateTags["(0101,{TEST}9B)"]
 
 
+(0010,0010) := (0008,0032)  //Replace patient name with acquisition time as placeholder
+
+(0010,0020) := hashUID[(0010,0020)] //  patient ID generation from UID
 
 (0008,0050) := (0008,0032)  // Replace accession number with acquisition time as placeholder
 (0020,0010) := (0008,0032)  // Replace study ID with acquisition time as placeholder
 
-// Remove data as per DICOM Supp 142 but shift all dates 
+// Remove data as per DICOM Supp 142
 
 
 //-(0000,1000) // Remove Affected SOP Instance UID
@@ -209,7 +214,7 @@ retainPrivateTags["(0101,{TEST}9B)"]
 //(0002,0002) := hashUID[(0002,0002)] // HashUID used to replace Media Storage SOP Class UID
 //(0002,0003) := hashUID[(0002,0003)] // HashUID used to replace the Media Storage SOP Instance UID
 //(0004,1511) := hashUID[(0004,1511)] // HashUID used to replace the Referenced SOP Instance UID in File
-//(0008,0014) := hashUID[(0008,0014)] // HashUID used to replace the Instance Creator UID
+(0008,0014) := hashUID[(0008,0014)] // HashUID used to replace the Instance Creator UID
 //(0008,0016) := hashUID[(0008,0016)] // HashUID used to replace SOP Class UID
 //(0008,1140) := hashUID[(0008,1140)] // HashUID used to replace the Referenced Image Sequence
 //(0008,0018) := hashUID[(0008,0018)] // HashUID used to replace the SOP Instance UID
@@ -219,14 +224,14 @@ retainPrivateTags["(0101,{TEST}9B)"]
 (0008,3010) := hashUID[(0008,3010)] // HashUID used to replace the Irradiation Event UID
 (0008,9123) := hashUID[(0008,9123)] // HashUID used to replace the Creator Version UID
 (0018,1002) := hashUID[(0018,1002)] // HashUID used to replace the Device UID
-//(0020,000D) := hashUID[(0020,000D)] // HashUID used to replace the Study Instance UID
-//(0020,000E) := hashUID[(0020,000E)] // HashUID used to replace the Series Instance UID
+(0020,000D) := hashUID[(0020,000D)] // HashUID used to replace the Study Instance UID
+(0020,000E) := hashUID[(0020,000E)] // HashUID used to replace the Series Instance UID
 (0020,0052) := hashUID[(0020,0052)] // HashUID used to replace the Frame of Reference UID
 (0020,0200) := hashUID[(0020,0200)] // HashUID used to replace the Synchronization Frame of Reference UID
 (0020,9161) := hashUID[(0020,9161)] // HashUID used to replace the Concatenation UID
 (0020,9164) := hashUID[(0020,9164)] // HashUID used to replace the Dimension Organization UID
-//(0028,1199) := hashUID[(0028,1199)] // HashUID used to replace the Palette Color Lookup Table UID
-//(0028,1214) := hashUID[(0028,1214)] // HashUID used to replace the Large Palette Color Lookup Table UID
+(0028,1199) := hashUID[(0028,1199)] // HashUID used to replace the Palette Color Lookup Table UID
+(0028,1214) := hashUID[(0028,1214)] // HashUID used to replace the Large Palette Color Lookup Table UID
 (0040,4023) := hashUID[(0040,4023)] // HashUID used to replace the Referenced General Purpose Scheduled Procedure Step Transaction UID
 (0040,A124) := hashUID[(0040,A124)] // HashUID used to replace the UID
 (0040,DB0C) := hashUID[(0040,DB0C)] // HashUID used to replace the Template Extension Organization UID
@@ -251,9 +256,20 @@ retainPrivateTags["(0101,{TEST}9B)"]
 (0008,0033) :="" // Replace Content Time with a zero length value.
 (0018,0010) :="" // Replace Contrast Bolus Agent with a zero length value.
 
+
+//Shift all dates by 11 days
+(0008,0021) := shiftDateByIncrement[(0008,0021), "X"] // Change Series Date
+(0008,002A) := shiftDateByIncrement[(0008,002A), "X"] // Change Acquisition DateTime
+(0008,0022) := shiftDateByIncrement[(0008,0022), "X"] // Change Acquisition Date
+(0008,0020) := shiftDateByIncrement[(0008,0020), "X"] // Change Study Date
+(0008,0023) := shiftDateByIncrement[(0008,0023), "X"] // Change Content Date
+(0040,0244) := shiftDateByIncrement[(0008,0244), "X"] // Change Performed Procedure Step Start Date
+
+
 // Below are modality-specific tags which have been identified to, depending on manufacturer, 
 // frequently contain dates, times and similar information. They are amended below.
 
+(0018,1078) := concatenate["20000101", (0018,1072)] // PET radiopharmaceutical date amended, time perserved.
 -(0008,0106) // Remove Context Group Version (date)
 -(0008,1050) // Remove Performing Physician's Name Attribute
 -(0018,1201) // Remove Time of Last Calibration
@@ -276,18 +292,19 @@ retainPrivateTags["(0101,{TEST}9B)"]
 -(0018,1014) // Remove Time of Secondary Capture
 
 
-//Shift all dates by 9 days
-(0008,0021) := shiftDateByIncrement[(0008,0021), "9"] // Change Series Date
-(0008,002A) := shiftDateByIncrement[(0008,002A), "9"] // Change Acquisition DateTime
-(0008,0022) := shiftDateByIncrement[(0008,0022), "9"] // Change Acquisition Date
-(0008,0020) := shiftDateByIncrement[(0008,0020), "9"] // Change Study Date
-(0008,0023) := shiftDateByIncrement[(0008,0023), "9"] // Change Content Date
-(0040,0244) := shiftDateByIncrement[(0008,0244), "9"] // Change Performed Procedure Step Start Date
+// GSTT XNAT anonymisation/de-identification script -- add on
 
+version "6.3"
+
+project != "Unassigned" ? (0008,1030) := project //sets the project name
+
+(0010,0010) := subject // Patient name is replaced with subjectID as given at DQR
+
+(0010,0020) := substring [(0010,0020), 14, 24] // patient ID is replaced with a subset of a hash to create a reasonably unique patient ID
 
 (0008,0050) := concatenate[(0010,0020),"-",session] //sets accession number to the combination of patient ID and session name to create a unique number
 
-(0020,0010) := concatenate[session,subject)] // set study ID name
+(0020,0010) := concatenate[session,subject," Study")] // set study ID name
 
 delete[ "(2001,1100)" ] //removes private Philips tags 
 delete[ "(2005,140F)" ] //removes private Philips tags 
@@ -296,9 +313,6 @@ delete[ "(2001,9001)" ] //removes private Philips tags
 
 delete[ "(0040,1001)" ] //removes Philips date tags 
 delete[ "(0040,2004)" ] //removes Philips date tags 
-
-delete[ "(0033,100E)" ] //removes extra comments
-delete[ "(0033,1013)" ] //removes extra name
 
 // Commands for removing MRI-specific data in case it isn't removed at first iteration
 
@@ -325,3 +339,10 @@ delete[ "(0033,1013)" ] //removes extra name
 //  Commands for removing DX-specific data in case it isn't removed at first iteration
 
 -(0054,0410) // Remove Context Group Version
+
+
+// assign project, session and subject to correct tags
+
+(0008,1030) := project
+(0010,0010) := subject
+(0010,0020) := session
