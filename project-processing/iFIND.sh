@@ -75,6 +75,7 @@ newdirectory="${startpoint}_$endpoint"
 mkdir -p $destdir/"$newdirectory"
 newdestdir="$destdir/"$newdirectory""
 
+# TODO: Start bg session at this point so that user does not need to pause and restart with bg %
 # save below to log file
 exec 3>&1 4>&2
 trap 'exec 2>&4 1>&3' 0 1 2 3 15 RETURN
@@ -101,7 +102,18 @@ length=${#subset[@]}
 
 # sleep 2
 
-# TODO: Update to support folders with unexpected folder structures
+# To handle unexpected folder structures, delete all folders except for "1"
+printf '################## STARTING FOLDER CLEAN-UP ##################\n\n'
+for (( i=0; i<length; i++ )); do
+  directory="${subset[i]}/SCANS"
+  printf "Looking at folder: %s\n\n" "$directory"
+#  printf "Hello %s" "${subset[i]}"
+#  for j in $directory; do
+#    printf "Looking at folder: %s\n\n" "$j"
+    rm -r $directory/!(1)/
+#  done
+done
+
 # Decompress data
 printf '################## DECOMPRESSING DATA ##################\n\n'
 for (( i=0; i<length; i++ )); do
@@ -128,11 +140,13 @@ done
 
 # sleep 2
 
-# Delete original, patient-identifiable data
-printf '################## STARTING FOLDER 1 CLEAN-UP ##################\n\n'
-directory="$newdestdir/*/SCANS/1"
-rm -r $directory
-printf "################## FOLDER 1 CLEANED UP ##################\n\n"
+# Delete all folders except for "clean"
+printf '################## STARTING FOLDER CLEAN-UP ##################\n\n'
+for (( i=0; i<length; i++ )); do
+  directory="${subset[i]}/SCANS"
+  printf "Looking at folder: %s\n\n" "$directory"
+    rm -r $directory/!(clean)/
+done
 
 # sleep 1
 
@@ -151,11 +165,13 @@ done
 printf '################## ZIPPING FOLDERS ##################\n\n'
 for (( i=0; i<length; i++ )); do
   directory="${subset[i]}"
+  folder="$(basename -- $directory)"
+  #dir_path="$(dirname "$directory")"
   #clean_dir="${subset[i]}/SCANS/clean"
-  zip_dir="fh-$(basename $directory).zip"
-  printf "Zipping %s as %s" $directory "$newdestdir/$zip_dir"
-  zip -r "$newdestdir/$zip_dir" $directory
-  printf "Deleting folder %s" $directory
+  zip_dir="fh-$folder.zip"
+  printf "Zipping directory %s as %s in %s\n\n" $directory $zip_dir $newdestdir
+  zip -r -j $newdestdir/$zip_dir $directory
+  printf "Deleting original directory: %s\n\n" $directory
   rm -r $directory
 done
 
