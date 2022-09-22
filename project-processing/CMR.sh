@@ -2,13 +2,13 @@
 # Transfers, processes and zips CMR data
 #
 # Usage:
-# source CMR.sh <username> <destination folder> <start position> <end position>
+# source CMR.sh <username> <destination folder> <start position> <end position> &
 #
 # Example:
-# Process the first 100 sessions in the CMR folder in /mnt/vol_data_flipstor02
+# Process (in the background) the first 100 sessions in the CMR folder in /mnt/vol_data_flipstor02
 # and write log to haljazzaf's directory
 #
-# bash CMR.sh haljazzaf CMR 1 100 &
+# source CMR.sh haljazzaf CMR 1 100 &
 
 shopt -s extglob nullglob
 old="$IFS"
@@ -66,9 +66,9 @@ length=${#subset[@]}
 printf '################## ZIPPING FOLDERS ##################\n\n'
 # Change directory, i.e. to user's destination directory
 changedir
-
 folder="$(basename -- $newdestdir)"
-zip_dir="$folder.zip"
+# Prepend folder name with project shorthand
+zip_dir="$2-$folder.zip"
 printf "Zipping directory %s in %s\n\n" $newdestdir $destdir
 zip -r $newdirectory $newdirectory
 printf "Deleting original directory %s\n\n" $newdestdir
