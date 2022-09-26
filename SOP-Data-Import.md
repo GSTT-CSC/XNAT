@@ -1,23 +1,11 @@
-<!-- PROJECT HEADING -->
-<br />
-<p align="center">
-<a href="https://github.com/GSTT-CSC/XNAT">
-    <img src="https://raw.githubusercontent.com/GSTT-CSC/gstt-csc.github.io/main/assets/transparent-CSC-logo-cropped.png" alt="Logo" width="50%">
-  </a>
-<h1 align="center">Data Import</h1>
-<p align="center">
-This SOP identifies and explains the process of data import in XNAT. For any further information please contact Dika or Haleema.
-<br />
+[![image](assets/transparent-CSC-logo.png)](https://github.com/GSTT-CSC/XNAT)
 
-<br />
-<a href="https://github.com/GSTT-CSC/XNAT">View repo</a>
-·
-<a href="https://github.com/GSTT-CSC/XNAT/issues">Report Error</a>
-·
-<a href="https://github.com/GSTT-CSC/XNAT/issues">Request Feature</a>
-·
-<a href="https://github.com/GSTT-CSC/XNAT/issues">Request Document</a>
-</p>
+# Data Import
+
+This SOP identifies and explains the process of data import in XNAT. For any further information please contact Dika or Haleema.
+
+[View Repo](https://github.com/GSTT-CSC/XNAT) . [Report Error](https://github.com/GSTT-CSC/XNAT/issues) . [Request Feature](https://github.com/GSTT-CSC/XNAT/issues) . [Request Document](https://github.com/GSTT-CSC/XNAT/issues)
+
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
