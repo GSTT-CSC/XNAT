@@ -1,23 +1,8 @@
-<!-- PROJECT HEADING -->
-<br />
-<p align="center">
-<a href="https://github.com/GSTT-CSC/XNAT">
-    <img src="https://github.com/GSTT-CSC/gstt-csc.github.io/blob/gh-pages/assets/img/transparent-CSC-logo.png" alt="Logo" width="50%">
-  </a>
-<h1 align="center">XNAT</h1>
-<p align="center">
-Tracked documentation on XNAT
-<br />
+[![image](assets/transparent-CSC-logo.png)](https://github.com/GSTT-CSC/XNAT)
 
-<br />
-<a href="https://github.com/GSTT-CSC/XNAT">View repo</a>
-·
-<a href="https://github.com/GSTT-CSC/XNAT/issues">Report Error</a>
-·
-<a href="https://github.com/GSTT-CSC/XNAT/issues">Request Feature</a>
-·
-<a href="https://github.com/GSTT-CSC/XNAT/issues">Request Document</a>
-</p>
+# XNAT
+
+[View Repo](https://github.com/GSTT-CSC/XNAT) . [Report Error](https://github.com/GSTT-CSC/XNAT/issues) . [Request Feature](https://github.com/GSTT-CSC/XNAT/issues) . [Request Document](https://github.com/GSTT-CSC/XNAT/issues)
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
