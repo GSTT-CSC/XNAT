@@ -1,3 +1,4 @@
+# DMCTK upload script WIP
 # 41 csvfile, $2 project
 #storescp -aet XNAT -od /home/hnadmin/test_qr/incoming_data -ss diverter 105 &
 #num=1

@@ -126,7 +126,7 @@ After following either of the above two data retrieval methods, you will need to
 ### Anonymisation
 The following image represents the data flow from within an NHS trust to their research environment, including the steps taken to remove all identifiable information from medical images to ensure no personal information ever leaves the NHS trust.
 
-![](./assets/anon-flowchart.jpg)
+![](../assets/anon-flowchart.jpg)
 
 The two methods of de-identification are outlined below.
 
