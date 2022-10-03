@@ -9,16 +9,16 @@ logging.basicConfig(level=logging.INFO)
 def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
     """
     Main function, creates xnat session and sends all subjects to destination
-    :param destination:
-    :param xnat_configuration:
-    :param delay:
+    :param destination: name of PACS destination (label in xnat)
+    :param xnat_configuration: dictionary with keys 'server', 'user', 'password', 'project', 'verify'
+    :param delay: additional delay in seconds after each scan is sent
     :return:
     """
 
     with xnat.connect(server=xnat_configuration['server'],
                       user=xnat_configuration['user'],
                       password=xnat_configuration['password'],
-                      verify=xnat_configuration['verify'],
+                      # verify=xnat_configuration['verify'],
                       ) as session:
 
         #  get list of XNAT PACS destinations
