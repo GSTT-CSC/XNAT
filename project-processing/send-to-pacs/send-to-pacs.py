@@ -18,7 +18,7 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
     with xnat.connect(server=xnat_configuration['server'],
                       user=xnat_configuration['user'],
                       password=xnat_configuration['password'],
-                      # verify=xnat_configuration['verify'],
+                      verify=xnat_configuration['verify'],
                       ) as session:
 
         #  get list of XNAT PACS destinations
