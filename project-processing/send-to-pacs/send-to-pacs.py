@@ -33,7 +33,7 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
-                if 'Lunit' in [x.read_dicom()[0x0008, 0x0070].value for x in experiment.scans.values()]:
+                if any('Lunit' in x for x in [x.read_dicom()[0x0008, 0x0070].value for x in experiment.scans.values()]):
                     logging.info(f'\t\tLunit data already available in {experiment}')
                     continue
                 for scan in experiment.scans.values():
@@ -45,7 +45,7 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                         else:
                             logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
                     except Exception as e:
-                        logging.info(f'\t\tSkipping, due to exception: {e}')
+                        logging.exception(f'\t\tException: {e}')
                         continue
                     time.sleep(delay)
 
