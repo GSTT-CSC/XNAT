@@ -32,19 +32,20 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
         for subject in project.subjects.values():
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
+                time.sleep(delay)
                 logging.info(f'\tExperiment: {experiment}')
-                if any('Lunit' in x for x in [x.read_dicom()[0x0008, 0x0070].value for x in experiment.scans.values()]):
+                if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
                     logging.info(f'\t\tLunit data already available in {experiment}')
                     continue
                 for scan in experiment.scans.values():
-                    time.sleep(delay)
                     logging.info(f'\t\tExporting scan to destination: {scan.uri}')
                     try:
-                        if 'Lunit' not in scan.read_dicom()[0x0008, 0x0070].value:
-                            response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-                            logging.debug(response)
-                        else:
-                            logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
+                        if '99999999' not in scan.id:
+                            if 'Lunit' not in scan.read_dicom()[0x0008, 0x0070].value:
+                                response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+                                logging.debug(response)
+                            else:
+                                logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
                     except Exception as e:
                         logging.exception(f'\t\tException: {e}')
                         continue
