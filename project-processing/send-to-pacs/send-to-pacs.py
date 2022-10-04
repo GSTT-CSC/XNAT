@@ -33,6 +33,9 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
+                if 'Lunit' in [x.read_dicom()[0x0008, 0x0070].value for x in experiment.scans.values()]:
+                    logging.info(f'\t\tLunit data already available in {experiment}')
+                    continue
                 for scan in experiment.scans.values():
                     logging.info(f'\t\tExporting scan to destination: {scan.uri}')
                     try:
