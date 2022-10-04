@@ -42,8 +42,8 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                             time.sleep(delay)
                         else:
                             logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
-                    except ValueError as e:
-                        logging.info(f'\t\tskipping, image not dicom: {e}')
+                    except Exception as e:
+                        logging.info(f'\t\tSkipping, due to exception: {e}')
                         continue
 
 
