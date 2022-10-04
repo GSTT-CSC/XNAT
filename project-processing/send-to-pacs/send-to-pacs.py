@@ -42,12 +42,12 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                         if 'Lunit' not in scan.read_dicom()[0x0008, 0x0070].value:
                             response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
                             logging.debug(response)
-                            time.sleep(delay)
                         else:
                             logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
                     except Exception as e:
                         logging.info(f'\t\tSkipping, due to exception: {e}')
                         continue
+                    time.sleep(delay)
 
 
 if __name__ == '__main__':
