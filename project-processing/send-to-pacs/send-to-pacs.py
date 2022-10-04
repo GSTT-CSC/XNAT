@@ -40,7 +40,7 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                             logging.debug(response)
                             time.sleep(delay)
                         else:
-                            logging.info('\t\tskipping, image not type: ORIGINAL')
+                            logging.info(f'\t\tskipping, "ORIGINAL" not in {scan.read_dicom()[0x0008, 0x0008].value}')
                     except ValueError as e:
                         logging.info(f'\t\tskipping, image not dicom: {e}')
                         continue
