@@ -1,6 +1,7 @@
 import xnat
 import logging
 import time
+import configparser
 
 
 logging.basicConfig(level=logging.INFO)
@@ -46,16 +47,18 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                         continue
 
 
-
 if __name__ == '__main__':
 
-    xnat_configuration = {'server': 'http://localhost:80',
-                          'user': 'admin',
-                          'password': 'admin',
-                          'project': 'ScaphoidFractures',
-                          'verify': 'false'}
+    config = configparser.ConfigParser()
+    config.read('config.cfg')
 
-    destination = 'horos'
-    delay = 10
+    xnat_configuration = {'server': config['xnat']['SERVER'],
+                          'user': config['xnat']['USER'],
+                          'password': config['xnat']['PASSWORD'],
+                          'project': config['project']['NAME'],
+                          'verify': False}
+
+    destination = config['xnat']['DESTINATION']
+    delay = config['xnat']['DELAY']
 
     send_to_pacs(xnat_configuration, destination, delay=delay)
