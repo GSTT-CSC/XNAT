@@ -34,9 +34,17 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                 logging.info(f'\tExperiment: {experiment}')
                 for scan in experiment.scans.values():
                     logging.info(f'\t\tExporting scan to destination: {scan.uri}')
-                    response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-                    logging.debug(response)
-                    time.sleep(delay)
+                    try:
+                        if 'ORIGINAL' in scan.read_dicom()[0x0008, 0x0008].value:
+                            response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+                            logging.debug(response)
+                            time.sleep(delay)
+                        else:
+                            logging.info('\t\tskipping, image not type: ORIGINAL')
+                    except ValueError as e:
+                        logging.info(f'\t\tskipping, image not dicom: {e}')
+                        continue
+
 
 
 if __name__ == '__main__':
