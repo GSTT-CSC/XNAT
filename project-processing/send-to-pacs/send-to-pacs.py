@@ -55,7 +55,7 @@ if __name__ == '__main__':
     xnat_configuration = {'server': config['xnat']['SERVER'],
                           'user': config['xnat']['USER'],
                           'password': config['xnat']['PASSWORD'],
-                          'project': config['project']['NAME'],
+                          'project': config['xnat']['PROJECT'],
                           'verify': False}
 
     destination = config['xnat']['DESTINATION']
