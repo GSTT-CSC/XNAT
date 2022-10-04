@@ -33,22 +33,18 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
+
+                # check if any series called '99999999' is already in session
                 if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
                     logging.info(f'\t\tLunit data already available in {experiment}')
                     continue
+
+                # loop over scans in experiment and send to destination
                 for scan in experiment.scans.values():
                     logging.info(f'\t\tExporting scan to destination: {scan.uri}')
-                    try:
-                        if '99999999' not in scan.id:
-                            if 'Lunit' not in scan.read_dicom()[0x0008, 0x0070].value:
-                                response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-                                logging.debug(response)
-                                time.sleep(delay)
-                            else:
-                                logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
-                    except Exception as e:
-                        logging.exception(f'\t\tException: {e}')
-                        continue
+                    response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+                    logging.debug(response)
+                    time.sleep(delay)
 
 
 if __name__ == '__main__':
