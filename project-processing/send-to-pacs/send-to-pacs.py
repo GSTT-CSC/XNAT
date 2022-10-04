@@ -36,12 +36,12 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                 for scan in experiment.scans.values():
                     logging.info(f'\t\tExporting scan to destination: {scan.uri}')
                     try:
-                        if 'ORIGINAL' in scan.read_dicom()[0x0008, 0x0008].value:
+                        if 'Lunit' not in scan.read_dicom()[0x0008, 0x0070].value:
                             response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
                             logging.debug(response)
                             time.sleep(delay)
                         else:
-                            logging.info(f'\t\tskipping, "ORIGINAL" not in {scan.read_dicom()[0x0008, 0x0008].value}')
+                            logging.info(f'\t\tskipping, "Lunit" in manufacturer {scan.read_dicom()[0x0008, 0x0008].value}')
                     except ValueError as e:
                         logging.info(f'\t\tskipping, image not dicom: {e}')
                         continue
@@ -59,6 +59,6 @@ if __name__ == '__main__':
                           'verify': False}
 
     destination = config['xnat']['DESTINATION']
-    delay = config['xnat']['DELAY']
+    delay = int(config['xnat']['DELAY'])
 
     send_to_pacs(xnat_configuration, destination, delay=delay)
