@@ -37,6 +37,7 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                     logging.info(f'\t\tLunit data already available in {experiment}')
                     continue
                 for scan in experiment.scans.values():
+                    time.sleep(delay)
                     logging.info(f'\t\tExporting scan to destination: {scan.uri}')
                     try:
                         if 'Lunit' not in scan.read_dicom()[0x0008, 0x0070].value:
@@ -47,7 +48,6 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
                     except Exception as e:
                         logging.exception(f'\t\tException: {e}')
                         continue
-                    time.sleep(delay)
 
 
 if __name__ == '__main__':
