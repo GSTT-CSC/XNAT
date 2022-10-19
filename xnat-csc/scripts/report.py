@@ -25,6 +25,8 @@ def parse_arguments():
     parse_at = subparsers.add_parser('accession-trace')
     # parse_at.add_argument('username', metavar='username', type=str, action="store", help='Username')
     parse_at.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
+    parse_at.add_argument('study_description', metavar='Study description', type=str, action="store",
+                          help='Study description')
 
     # Subparser for swagger-report
     parser_sr = subparsers.add_parser('swagger-report')
@@ -39,6 +41,7 @@ def parse_arguments():
 
     args = parser.parse_args()
     return args
+
 
 # TODO: Add connect() for XNAT API (see https://gitlab.com/KCL-BMEIS/Data-Analytics/DaDa/-/wikis/The-XNAT-REST-API)
 # TODO: Add pathlib() to use username arg for filepath
@@ -118,12 +121,11 @@ def swagger_report(swaggerresponse, spreadsheet, reportname):
     report_df.to_csv(directory / f'{reportname}.csv', index=False)
 
 
-def subject_master_list(dirpath, reportname):
+def subject_master_list(dirpath, studydescription, reportname):
     """
     Maps accession ID trace request and results into a consolidated subject master list
-    :param json_dirpath: Path to directory containing JSON response(s) from Swagger UI in XNAT containing traced
-    accession IDs
-    :param csv_dirpath: Path to directory containing CSV file(s) submitted to Swagger UI
+    :param dirpath: Path to directory containing CSV file(s) submitted via Swagger and JSON response(s)
+    :param studydescription: Study description of interest, i.e. keep only specific JSON response records
     # :param username: Username
     :param reportname: Filename of the output file
     """
@@ -162,7 +164,7 @@ def subject_master_list(dirpath, reportname):
 
             new_studies_df = new_studies_df[['PatientID', 'AccessionNumber', 'StudyDate', 'StudyID', 'StudyInstanceUID',
                                              'StudyDescription']]
-            new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == 'MRI Heart'.casefold()]
+            new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
             json_df = json_df.append(new_df, ignore_index=True)
         elif file.suffix == '.csv':
             data = pd.read_csv(file)
@@ -181,12 +183,14 @@ def subject_master_list(dirpath, reportname):
     # Export report CSV
     final_df.to_csv(directory / f'{reportname}.csv', index=False)
 
+
 if __name__ == "__main__":
     arguments = parse_arguments()
     if arguments.subcommand == "accession-trace":
         print("\nCreating subject master list with traced accession numbers...\n")
-        subject_master_list(p.Path(arguments.dir_path), arguments.filename)
+        subject_master_list(p.Path(arguments.dir_path), arguments.study_description, arguments.filename)
     elif arguments.subcommand == "swagger-report":
         print("\nCreating ingestion report...\n")
+        swagger_report(arguments.failure_json, arguments.success_csv, arguments.filename)
     else:
         print("\nNo task to be performed.\n")
