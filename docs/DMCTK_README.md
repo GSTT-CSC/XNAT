@@ -1,3 +1,4 @@
+# DMCTK upload script WIP
 Prelimary:
    you are not using the XNAT dicom receievr. You may have to edit docker-compose.yml (in the xnat-setup file) to remove the port mapping and restart docker (./restart.sh) 
    Edit dqr.sh - you must enter the AEC and PACS IP/PORT in the variables at the top. 

@@ -1,4 +1,4 @@
-
+# DMCTK upload script WIP
 '''modify_dicoms
 sdfsd
 
