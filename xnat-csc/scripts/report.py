@@ -24,9 +24,9 @@ def parse_arguments():
     # Subparser for accession-trace
     parse_at = subparsers.add_parser('accession-trace')
     # parse_at.add_argument('username', metavar='username', type=str, action="store", help='Username')
-    parse_at.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
     parse_at.add_argument('study_description', metavar='Study description', type=str, action="store",
                           help='Study description')
+    parse_at.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
 
     # Subparser for swagger-report
     parser_sr = subparsers.add_parser('swagger-report')
@@ -132,6 +132,7 @@ def subject_master_list(dirpath, studydescription, reportname):
 
     csv_df = pd.DataFrame()
     json_df = pd.DataFrame()
+    print(studydescription)
 
     # Iterate through JSON files in directory
     for file in p.Path.iterdir(dirpath):
@@ -164,20 +165,19 @@ def subject_master_list(dirpath, studydescription, reportname):
 
             new_studies_df = new_studies_df[['PatientID', 'AccessionNumber', 'StudyDate', 'StudyID', 'StudyInstanceUID',
                                              'StudyDescription']]
-            new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
-            json_df = json_df.append(new_df, ignore_index=True)
+            #new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
+            json_df = json_df.append(new_studies_df, ignore_index=True)
         elif file.suffix == '.csv':
             data = pd.read_csv(file)
             csv_df = csv_df.append(data, ignore_index=True)
     csv_df.rename(columns={'Patient ID': 'PatientID', 'Study Date': 'StudyDate'}, inplace=True)
-    csv_df['StudyDate'] = pd.to_datetime(csv_df['StudyDate'], dayfirst=True)
+    #csv_df['StudyDate'] = pd.to_datetime(csv_df['StudyDate'], dayfirst=True)
+    csv_df['StudyDate'] = pd.to_datetime(csv_df['StudyDate'].astype(str), format='%Y%m%d')
     json_df['StudyDate'] = pd.to_datetime(json_df['StudyDate'], dayfirst=True)
-    final_df = pd.merge(csv_df, json_df, how='left', left_on=['PatientID', 'StudyDate'], right_on=['PatientID',
-                                                                                                   'StudyDate'])
+    final_df = pd.merge(csv_df, json_df, how='left', left_on=['PatientID', 'StudyDate'], right_on=['PatientID', 'StudyDate'])
 
     # Relative directory path
     directory = p.Path(__file__).parent
-
     # Export report CSV to user home folder
     # report_df.to_csv(pathlib.Path.home() / 'home' / f'{username}' / f'{reportname}.csv', index=False)
     # Export report CSV
