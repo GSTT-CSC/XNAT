@@ -37,6 +37,8 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                     findings = get_lunit_header(experiment)
                 except ValueError:
                     logging.warning(f'Subject {subject} has no valid dicom resource!')
+                    results_list.append({'Subject': subject.label,
+                                        'EXCLUDE': True})
                     continue
                 if not findings:
                     logging.info(f'Subject {subject} has no findings')
