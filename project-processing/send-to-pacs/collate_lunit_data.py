@@ -33,13 +33,24 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
+
                 try:
                     findings = get_lunit_header(experiment)
-                except ValueError:
+
+                except MultipleOriginalImages:
                     logging.warning(f'Subject {subject} has no valid dicom resource!')
                     results_list.append(pd.DataFrame({'Subject': [subject.label],
-                                        'EXCLUDE': [True]}).set_index('Subject'))
+                                                      'EXCLUDE': [True],
+                                                      'EXCLUSION_REASON': MultipleOriginalImages}).set_index('Subject'),)
                     continue
+
+                except NoValidDicomResource:
+                    logging.warning(f'Subject {subject} has no valid dicom resource!')
+                    results_list.append(pd.DataFrame({'Subject': [subject.label],
+                                                      'EXCLUDE': [True],
+                                                      'EXCLUSION_REASON': NoValidDicomResource}).set_index('Subject'),)
+                    continue
+
                 if not findings:
                     logging.info(f'Subject {subject} has no findings')
                     continue
@@ -67,8 +78,8 @@ def get_lunit_header(experiment):
     #  if multiple images in dataset, exclude
     if len([x for x in [scan.id for scan in experiment.scans.values()] if 'ORIGINAL' in experiment.scans[x].dicom_dump(fields='00080008')[0]['value']]) > 1:
         logging.info(f'\t\tExcluding due to multiple ORIGINAL images in {experiment}')
-        raise ValueError
-    
+        raise MultipleOriginalImages
+
     lunit_results = [x for x in [scan.id for scan in experiment.scans.values()] if
                      'Lunit' in experiment.scans[x].dicom_dump(fields='00080070')[0]['value']]
     logging.info(f'found lunit results: {lunit_results}')
@@ -81,6 +92,14 @@ def get_lunit_header(experiment):
     r = lunit_header[0x0009, 0x1003].value[0][0x0009, 0x1004].value
     k = json.loads(r)
     return k['Findings']
+
+
+class MultipleOriginalImages(Exception):
+    """Multiple original images present"""
+
+
+class NoValidDicomResource(ValueError):
+    """No valid dicom resource could be found"""
 
 
 if __name__ == '__main__':
