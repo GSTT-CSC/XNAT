@@ -1,7 +1,7 @@
 import configparser
 import json
 import logging
-from pathlib import PurePath
+from pathlib import Path
 
 import pandas as pd
 import xnat
@@ -32,7 +32,6 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
         for subject in project.subjects.values():
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
-                time.sleep(1)
                 logging.info(f'\tExperiment: {experiment}')
                 try:
                     findings = get_lunit_header(experiment)
@@ -78,7 +77,7 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('config.cfg')
 
-    original_data_path = PurePath(config['data']['path'])
+    original_data_path = Path(config['data']['path'])
     original_data = pd.read_csv(original_data_path)
 
     xnat_configuration = {'server': config['xnat']['SERVER'],
@@ -91,6 +90,6 @@ if __name__ == '__main__':
     delay = int(config['xnat']['DELAY'])
 
     out = extract_header_info(xnat_configuration=xnat_configuration, original_data=original_data)
-    out_path = original_data_path.with_stem(original_data_path.stem + '_result')
+    out_path = str(original_data_path.parent) + original_data_path.stem + '_result' + original_data_path.suffix
     logging.info(f'Writing results to: {out_path}')
     out.to_csv(out_path)
