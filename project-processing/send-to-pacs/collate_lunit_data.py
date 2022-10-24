@@ -41,14 +41,14 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                     logging.warning(f'Subject {subject} has no valid dicom resource!')
                     results_list.append(pd.DataFrame({'Subject': [subject.label],
                                                       'EXCLUDE': [True],
-                                                      'EXCLUSION_REASON': MultipleOriginalImages}).set_index('Subject'),)
+                                                      'EXCLUSION_REASON': MultipleOriginalImages.__name__}).set_index('Subject'),)
                     continue
 
                 except NoValidDicomResource:
                     logging.warning(f'Subject {subject} has no valid dicom resource!')
                     results_list.append(pd.DataFrame({'Subject': [subject.label],
                                                       'EXCLUDE': [True],
-                                                      'EXCLUSION_REASON': NoValidDicomResource}).set_index('Subject'),)
+                                                      'EXCLUSION_REASON': NoValidDicomResource.__name__}).set_index('Subject'),)
                     continue
 
                 if not findings:
@@ -68,8 +68,10 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
 
     df = pd.concat(results_list)
     # ensure exclude column at start of predictions
-    column_to_move = df.pop("EXCLUDE")
-    df.insert(0, "EXCLUDE", column_to_move)
+    # column_to_move = df.pop("EXCLUDE")
+    # df.insert(0, "EXCLUDE", column_to_move)
+    df[['EXCLUDE', 'EXCLUSION_REASON'] + [c for c in df if c not in ['b', 'x']]]
+
     out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
     return out
 
