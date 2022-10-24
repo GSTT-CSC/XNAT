@@ -39,7 +39,7 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                 except ValueError:
                     logging.warn(f'Subject {subject} has no valid dicom resourcew!')
                     continue
-                findings = [findings[0]]
+
                 # get maximum value in cases where multiple regions identified
                 result_df = pd.DataFrame(findings)
                 result_df.sort_values(by=['AbnormalityScore'], inplace=True)
