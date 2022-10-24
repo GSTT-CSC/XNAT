@@ -67,13 +67,11 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                 results_list.append(df2)
 
     df = pd.concat(results_list)
-    # ensure exclude column at start of predictions
-    # column_to_move = df.pop("EXCLUDE")
-    # df.insert(0, "EXCLUDE", column_to_move)
-    cols = list(df.columns.values)  # Make a list of all of the columns in the df
-    cols.pop(cols.index('EXCLUDE'))  # Remove b from list
-    cols.pop(cols.index('EXCLUSION_REASON'))  # Remove x from list
-    df = df[['EXCLUDE', 'EXCLUSION_REASON'] + cols] # Create new dataframe with columns in the order you want
+    #  reorder to have exclusion and reason at start
+    cols = list(df.columns.values)
+    cols.pop(cols.index('EXCLUDE'))
+    cols.pop(cols.index('EXCLUSION_REASON'))
+    df = df[['EXCLUDE', 'EXCLUSION_REASON'] + cols]
 
     out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
 
