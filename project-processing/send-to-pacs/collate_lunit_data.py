@@ -31,8 +31,8 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
         results_list = []
         for subject in project.subjects.values():
             logging.info(f'Subject: {subject}')
-            time.sleep(2)
             for experiment in subject.experiments.values():
+                time.sleep(10)
                 logging.info(f'\tExperiment: {experiment}')
                 findings = get_lunit_header(experiment)
 
