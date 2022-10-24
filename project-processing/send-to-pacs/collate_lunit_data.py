@@ -41,14 +41,14 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                     logging.warning(f'Subject {subject} has no valid dicom resource!')
                     results_list.append(pd.DataFrame({'Subject': [subject.label],
                                                       'EXCLUDE': [True],
-                                                      'EXCLUSION_REASON': MultipleOriginalImages.__name__}).set_index('Subject'),)
+                                                      'EXCLUSION_REASON': MultipleOriginalImages.__name__}).set_index('Subject'))
                     continue
 
-                except NoValidDicomResource:
+                except ValueError:
                     logging.warning(f'Subject {subject} has no valid dicom resource!')
                     results_list.append(pd.DataFrame({'Subject': [subject.label],
                                                       'EXCLUDE': [True],
-                                                      'EXCLUSION_REASON': NoValidDicomResource.__name__}).set_index('Subject'),)
+                                                      'EXCLUSION_REASON': NoValidDicomResource.__name__}).set_index('Subject'))
                     continue
 
                 if not findings:
