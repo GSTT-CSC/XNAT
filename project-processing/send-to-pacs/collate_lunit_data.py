@@ -45,6 +45,7 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                 result_df.sort_values(by=['AbnormalityScore'], inplace=True)
                 result_df['Name'] = 'LUNIT_' + result_df['Name'].astype(str)
                 result_df.drop_duplicates(subset='Name', keep='last', inplace=True)
+                logging.info(f'results df: {result_df}')
                 series = result_df.set_index('Name').squeeze()
                 series['Subject'] = subject.label
                 logging.info(f'Storing results: {series}')
