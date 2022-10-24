@@ -27,19 +27,27 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
         logging.info(f'Opened XNAT Session: {session}')
         project = session.projects[xnat_configuration["project"]]
 
+        results_list = []
         for subject in project.subjects.values():
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
                 findings = get_lunit_header(experiment)
+
+                # get maximum value in cases where multiple regions identified
                 result_df = pd.DataFrame(findings)
+                result_df.sort_values(by=['AbnormalityScore'], inplace=True)
                 result_df['Name'] = 'LUNIT_' + result_df['Name'].astype(str)
+                result_df.drop_duplicates(subset='Name', keep='last', inplace=True)
                 series = result_df.set_index('Name').squeeze()
                 series['Subject'] = subject.label
-                df2 = series.to_frame().transpose()
-                original_data = pd.merge(original_data, df2, on='Subject', how='outer')
+                logging.info(f'Storing results: {series}')
+                df2 = series.to_frame().transpose().set_index('Subject')
+                results_list.append(df2)
 
-        return original_data
+    df = pd.concat(results_list)
+    out = pd.concat([original_data.set_index('Subject'), df], axis=1)
+    return out
 
 
 def get_lunit_header(experiment):
