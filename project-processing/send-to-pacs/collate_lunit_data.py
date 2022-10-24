@@ -72,7 +72,7 @@ if __name__ == '__main__':
     destination = config['xnat']['DESTINATION']
     delay = int(config['xnat']['DELAY'])
 
-    out = extract_header_info(xnat_configuration, destination, original_data, delay=delay)
+    out = extract_header_info(xnat_configuration=xnat_configuration, original_data=original_data)
     out_path = original_data_path.with_stem(original_data_path.stem + '_result')
     logging.info(f'Writing results to: {out_path}')
     out.to_csv(out_path)
