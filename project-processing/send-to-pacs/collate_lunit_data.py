@@ -1,20 +1,19 @@
 import xnat
 import logging
-import time
+import os
 import configparser
-import pandas
+import pandas as pd
 import json
 from pathlib import Path, PurePath
 
 logging.basicConfig(level=logging.INFO)
 
 
-def extract_header_info(xnat_configuration: dict, destination: str, original_data=None, delay: int = 10):
+def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = None):
     """
     Main function, creates xnat session and sends all subjects to destination
-    :param destination: name of PACS destination (label in xnat)
+    :param original_data:
     :param xnat_configuration: dictionary with keys 'server', 'user', 'password', 'project', 'verify'
-    :param delay: additional delay in seconds after each scan is sent
     :return:
     """
 
@@ -33,12 +32,12 @@ def extract_header_info(xnat_configuration: dict, destination: str, original_dat
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
                 findings = get_lunit_header(experiment)
-                result_df = pandas.DataFrame(findings)
+                result_df = pd.DataFrame(findings)
                 result_df['Name'] = 'LUNIT_' + result_df['Name'].astype(str)
                 series = result_df.set_index('Name').squeeze()
                 series['Subject'] = subject.label
                 df2 = series.to_frame().transpose()
-                original_data = pandas.merge(original_data, df2, on='Subject', how='outer')
+                original_data = pd.merge(original_data, df2, on='Subject', how='outer')
 
         return original_data
 
@@ -49,8 +48,8 @@ def get_lunit_header(experiment):
 
     # for now just take the newest lunit result
     lunit_results.sort()
-
     result = lunit_results[-1]
+
     lunit_header = experiment.scans[result].read_dicom(read_pixel_data=False)
     r = lunit_header[0x0009, 0x1003].value[0][0x0009, 0x1004].value
     k = json.loads(r)
@@ -61,9 +60,8 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('config.cfg')
 
-    original_data_path = PurePath('/Users/lj16/code/DATA/lunit/test_set/Test 20 dataset 4.8.22.csv')
-
-    original_data = pandas.read_csv(original_data_path)
+    original_data_path = PurePath(config['data']['path'])
+    original_data = pd.read_csv(original_data_path)
 
     xnat_configuration = {'server': config['xnat']['SERVER'],
                           'user': config['xnat']['USER'],
@@ -75,5 +73,6 @@ if __name__ == '__main__':
     delay = int(config['xnat']['DELAY'])
 
     out = extract_header_info(xnat_configuration, destination, original_data, delay=delay)
-
-    out.to_csv(original_data_path.with_stem(original_data_path.stem + '_result'))
+    out_path = original_data_path.with_stem(original_data_path.stem + '_result')
+    logging.info(f'Writing results to: {out_path}')
+    out.to_csv(out_path)
