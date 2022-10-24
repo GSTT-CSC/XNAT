@@ -56,11 +56,19 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                 results_list.append(df2)
 
     df = pd.concat(results_list)
+    # ensure exclude column at start of predictions
+    column_to_move = df.pop("EXCLUDE")
+    df.insert(0, "EXCLUDE", column_to_move)
     out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
     return out
 
 
 def get_lunit_header(experiment):
+    #  if multiple images in dataset, exclude
+    if len([x for x in [scan.id for scan in experiment.scans.values()] if 'ORIGINAL' in experiment.scans[x].dicom_dump(fields='00080008')[0]['value']]) > 1:
+        logging.info(f'\t\tExcluding due to multiple ORIGINAL images in {experiment}')
+        raise ValueError
+    
     lunit_results = [x for x in [scan.id for scan in experiment.scans.values()] if
                      'Lunit' in experiment.scans[x].dicom_dump(fields='00080070')[0]['value']]
     logging.info(f'found lunit results: {lunit_results}')
