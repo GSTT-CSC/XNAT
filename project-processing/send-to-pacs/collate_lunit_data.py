@@ -34,19 +34,10 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
             for experiment in subject.experiments.values():
                 time.sleep(2)
                 logging.info(f'\tExperiment: {experiment}')
-
-                lunit_results = [x for x in [scan.id for scan in experiment.scans.values()] if
-                                 'Lunit' in experiment.scans[x].dicom_dump(fields='00080070')[0]['value']]
-                logging.info(f'found lunit results: {lunit_results}')
-
-                # for now just take the newest lunit result
-                lunit_results.sort()
-                result = lunit_results[-1]
-
-                lunit_header = experiment.scans[result].read_dicom(read_pixel_data=False)
-                r = lunit_header[0x0009, 0x1003].value[0][0x0009, 0x1004].value
-                k = json.loads(r)
-                findings = k['Findings']
+                try:
+                    findings = get_lunit_header(experiment)
+                except ValueError:
+                    continue
 
                 # get maximum value in cases where multiple regions identified
                 result_df = pd.DataFrame(findings)
