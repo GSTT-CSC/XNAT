@@ -73,9 +73,10 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
     cols = list(df.columns.values)  # Make a list of all of the columns in the df
     cols.pop(cols.index('EXCLUDE'))  # Remove b from list
     cols.pop(cols.index('EXCLUSION_REASON'))  # Remove x from list
-    df = df[['EXCLUDE', 'EXCLUSION_REASON']]  + cols # Create new dataframe with columns in the order you want
+    df = df[['EXCLUDE', 'EXCLUSION_REASON'] + cols] # Create new dataframe with columns in the order you want
 
     out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
+
     return out
 
 
