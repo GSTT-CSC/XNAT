@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 import xnat
-import time
+import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -90,6 +90,6 @@ if __name__ == '__main__':
     delay = int(config['xnat']['DELAY'])
 
     out = extract_header_info(xnat_configuration=xnat_configuration, original_data=original_data)
-    out_path = str(original_data_path.parent) + original_data_path.stem + '_result' + original_data_path.suffix
+    out_path = os.path.join(str(original_data_path.parent), original_data_path.stem + '_result' + original_data_path.suffix)
     logging.info(f'Writing results to: {out_path}')
     out.to_csv(out_path)
