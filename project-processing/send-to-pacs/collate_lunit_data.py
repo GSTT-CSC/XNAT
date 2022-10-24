@@ -1,10 +1,10 @@
-import xnat
-import logging
-import os
 import configparser
-import pandas as pd
 import json
-from pathlib import Path, PurePath
+import logging
+from pathlib import PurePath
+
+import pandas as pd
+import xnat
 
 logging.basicConfig(level=logging.INFO)
 
