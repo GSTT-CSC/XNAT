@@ -54,7 +54,7 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                 results_list.append(df2)
 
     df = pd.concat(results_list)
-    out = pd.concat([original_data.set_index('Subject'), df], axis=1)
+    out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
     return out
 
 
