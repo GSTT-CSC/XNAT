@@ -37,6 +37,7 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                 try:
                     findings = get_lunit_header(experiment)
                 except ValueError:
+                    logging.warn(f'Subject {subject} has no valid dicom resourcew!')
                     continue
 
                 # get maximum value in cases where multiple regions identified
