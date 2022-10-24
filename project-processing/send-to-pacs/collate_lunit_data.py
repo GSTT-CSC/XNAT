@@ -70,7 +70,7 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
     # ensure exclude column at start of predictions
     # column_to_move = df.pop("EXCLUDE")
     # df.insert(0, "EXCLUDE", column_to_move)
-    df[['EXCLUDE', 'EXCLUSION_REASON'] + [c for c in df if c not in ['b', 'x']]]
+    df[['EXCLUDE', 'EXCLUSION_REASON'] + [c for c in df if c not in ['EXCLUDE', 'EXCLUSION_REASON']]]
 
     out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
     return out
