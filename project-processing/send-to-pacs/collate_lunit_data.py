@@ -2,12 +2,14 @@ import xnat
 import logging
 import time
 import configparser
-
+import pandas
+import json
+from pathlib import Path, PurePath
 
 logging.basicConfig(level=logging.INFO)
 
 
-def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
+def extract_header_info(xnat_configuration: dict, destination: str, original_data=None, delay: int = 10):
     """
     Main function, creates xnat session and sends all subjects to destination
     :param destination: name of PACS destination (label in xnat)
@@ -24,38 +26,44 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
 
         #  get list of XNAT PACS destinations
         logging.info(f'Opened XNAT Session: {session}')
-        pacs_list = session.get_json('/xapi/pacs/')
-        pacs = [x for x in pacs_list if x['label'] == destination][0]
         project = session.projects[xnat_configuration["project"]]
 
-        logging.info(f'Sending data in project {project} to PACS destination: {pacs}')
         for subject in project.subjects.values():
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
-                send_lunit_data(session, experiment, pacs)
+                findings = get_lunit_header(experiment)
+                result_df = pandas.DataFrame(findings)
+                result_df['Name'] = 'LUNIT_' + result_df['Name'].astype(str)
+                series = result_df.set_index('Name').squeeze()
+                series['Subject'] = subject.label
+                df2 = series.to_frame().transpose()
+                original_data = pandas.merge(original_data, df2, on='Subject', how='outer')
+
+        return original_data
 
 
-def send_lunit_data(session, experiment, pacs):
-    # check if any series called '99999999' is already in session
-    if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
-        logging.info(f'\t\tLunit data already available in {experiment}')
-        pass
-    elif len([x for x in [scan.id for scan in experiment.scans.values()] if 'ORIGINAL' in experiment.scans[x].dicom_dump(fields='00080008')[0]['value']]) > 1:
-        logging.info(f'\t\tExcluding due to multiple ORIGINAL images in {experiment}')
-    else:
-        for scan in experiment.scans.values():
-            logging.info(f'\t\tExporting scan to destination: {scan.uri}')
-            response = session.put('/xapi/dqr/export/',
-                                   query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-            logging.debug(response)
-            time.sleep(delay)
+def get_lunit_header(experiment):
+    lunit_results = [x for x in [scan.id for scan in experiment.scans.values()] if
+                     'Lunit' in experiment.scans[x].dicom_dump(fields='00080070')[0]['value']]
+
+    # for now just take the newest lunit result
+    lunit_results.sort()
+
+    result = lunit_results[-1]
+    lunit_header = experiment.scans[result].read_dicom(read_pixel_data=False)
+    r = lunit_header[0x0009, 0x1003].value[0][0x0009, 0x1004].value
+    k = json.loads(r)
+    return k['Findings']
 
 
 if __name__ == '__main__':
-
     config = configparser.ConfigParser()
     config.read('config.cfg')
+
+    original_data_path = PurePath('/Users/lj16/code/DATA/lunit/test_set/Test 20 dataset 4.8.22.csv')
+
+    original_data = pandas.read_csv(original_data_path)
 
     xnat_configuration = {'server': config['xnat']['SERVER'],
                           'user': config['xnat']['USER'],
@@ -66,4 +74,6 @@ if __name__ == '__main__':
     destination = config['xnat']['DESTINATION']
     delay = int(config['xnat']['DELAY'])
 
-    send_to_pacs(xnat_configuration, destination, delay=delay)
+    out = extract_header_info(xnat_configuration, destination, original_data, delay=delay)
+
+    out.to_csv(original_data_path.with_stem(original_data_path.stem + '_result'))
