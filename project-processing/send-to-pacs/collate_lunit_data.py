@@ -45,6 +45,7 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
 def get_lunit_header(experiment):
     lunit_results = [x for x in [scan.id for scan in experiment.scans.values()] if
                      'Lunit' in experiment.scans[x].dicom_dump(fields='00080070')[0]['value']]
+    logging.info(f'found lunit results: {lunit_results}')
 
     # for now just take the newest lunit result
     lunit_results.sort()
