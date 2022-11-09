@@ -2,13 +2,13 @@
 # Transfers, processes and zips iFIND data
 #
 # Usage:
-# bash iFIND.sh <username> <destination folder>
+# bash iFIND.sh <username> <destination folder> <start folder number> <end folder number>
 #
 # Example:
-# Process sessions in the iFIND_processing folder in /mnt/vol_data_flipstor02
-# and write log to haljazzaf's directory
+# Process all sessions between, and including, the 100th session and 200th in the iFIND_processing folder in
+# /mnt/vol_data_flipstor02 and write log to haljazzaf's directory in the background.
 #
-# bash iFIND.sh haljazzaf iFIND_processing
+# bash iFIND.sh haljazzaf iFIND_processing 100 200 &
 
 shopt -s extglob nullglob
 old="$IFS"
@@ -17,14 +17,17 @@ IFS=$old
 sourcedir="/home/hnadmin/xnat-data/xnat/archive/iFIND_2/*/"
 destdir="/mnt/vol_data_flipstor02/$2"
 homedir="/home/$1/"
+startpoint=$3
+endpoint=$4
 date=$(date -u)
-if [[ "$#" -ne 2 ]]; then
+
+#TODO: Make error message more helpful
+if [ "$#" -ne 4 ] || [ $((startpoint)) -gt $((endpoint)) ]; then
   echo "Incorrect number or format of arguments. Please try again."
   exit 0
 else :
 fi
 
-# TODO: Replace user interaction with argparse
 # Create array for source directory and subdirectories
 array=($sourcedir/*)
 
@@ -33,53 +36,30 @@ if ((${#array[@]}<=1)); then
   sleep 1
   exit 0
 else
-  printf "\n%d subdirectories found.\n\n" "${#array[@]}"
-  # Display the menu:
-  printf "Please enter the start and end point from and to which you would like to process the data. Enter 0 to exit.\n"
-  # Now wait for user input
-  while true; do
-      read -e -r -p "Your choice: " startpoint endpoint invalid
-      # Exit if user enters "0"
-      if [[ $startpoint -eq "0" ]]; then
-        printf "\nGood bye.\n"
-        exit 0
-      # Check that user has entered two arguments
-      elif [[ -z "$startpoint" || -z "$endpoint" || -n "$invalid" ]]; then
-        printf "\nIncorrect number of arguments. Please try again.\n"
-      # Check that user has entered valid arguments, i.e. these are valid numbers and are within number of subdirectories
-      elif [[ $startpoint =~ [^0-9] || $startpoint -le 0 || $startpoint -gt ${#array[@]} || $startpoint =~ [^0-9] || $endpoint -le 0 || $endpoint -gt ${#array[@]} ]]; then
-        printf "\nInvalid arguments. Please try again.\n"
-      else
-        # Force the number to be interpreted in radix 10
-        ((startpoint=10#$startpoint)) && ((endpoint=10#$endpoint)) && break
-        # Check that choice is a valid choice
-        ((startpoint<${#array[@]})) && ((endpoint<${#array[@]})) && break
-      fi
-  done
-  # Reconfirm user choices
-  printf "\nYou chose to start from %i to %i of the %i of subdirectories, i.e. folders %s to %s. It's a good choice.\n\n" "$startpoint" "$endpoint" "${#array[@]}" "${array[$(( startpoint - 1 ))]}" "${array[$(( endpoint - 1 ))]}"
-  # Give user chance to exit gracefully
-  printf "Do you want to continue? [Y/N]: \n"
-  read -e -r -p "Your choice: " choice
-  # Case-insensitive string comparison
-  shopt -s nocasematch
-  if [[ $choice = "N" || $choice != "Y" ]]; then
+  if [[ $startpoint -eq "0" ]]; then
     printf "\nGood bye.\n"
     exit 0
-  else
-    :
+    # Check that user has entered valid arguments, i.e. these are valid numbers and are within number of subdirectories
+    elif [[ $startpoint =~ [^0-9] || $startpoint -le 0 || $startpoint -gt ${#array[@]} || $startpoint =~ [^0-9] || $endpoint -le 0 || $endpoint -gt ${#array[@]} ]]; then
+      printf "\nInvalid arguments. Please try again.\n"
+      exit 0
+      else
+        # Force the number to be interpreted in radix 10
+        ((startpoint=10#$startpoint)) && ((endpoint=10#$endpoint))
+        # Check that choice is a valid choice
+        ((startpoint<${#array[@]})) && ((endpoint<${#array[@]}))
+      fi
+  # Save below to log file
+  exec 3>&1 4>&2
+  trap 'exec 2>&4 1>&3' 0 1 2 3 15 RETURN
+  exec 1>$homedir/"log-${startpoint}_${endpoint}_${date}.out" 2>&1
+  # Confirm folders to be processed:
+  printf "\nProcessing from %i to %i of the %i of subdirectories, i.e. folders %s to %s.\n\n" "$startpoint" "$endpoint" "${#array[@]}" "$(basename "${array[$(( startpoint - 1 ))]}")" "$(basename "${array[$(( endpoint - 1 ))]}")"
   fi
-fi
 
 newdirectory="${startpoint}_$endpoint"
 mkdir -p $destdir/"$newdirectory"
 newdestdir="$destdir/"$newdirectory""
-
-# TODO: Start bg session at this point so that user does not need to pause and restart with bg %
-# save below to log file
-exec 3>&1 4>&2
-trap 'exec 2>&4 1>&3' 0 1 2 3 15 RETURN
-exec 1>"log-${startpoint}_${endpoint}_${date}.out" 2>&1
 
 # Convert start and end points to array indices
 start=$(( startpoint - 1 ))
