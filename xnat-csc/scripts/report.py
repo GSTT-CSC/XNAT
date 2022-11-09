@@ -25,7 +25,7 @@ def parse_arguments():
     parse_at = subparsers.add_parser('accession-trace')
     # parse_at.add_argument('username', metavar='username', type=str, action="store", help='Username')
     parse_at.add_argument('study_description', metavar='Study description', type=str, action="store",
-                          help='Study description')
+                          help='Study description to filter on. If you would like to see all, enter "All" ')
     parse_at.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
 
     # Subparser for swagger-report
@@ -165,8 +165,11 @@ def subject_master_list(dirpath, studydescription, reportname):
 
             new_studies_df = new_studies_df[['PatientID', 'AccessionNumber', 'StudyDate', 'StudyID', 'StudyInstanceUID',
                                              'StudyDescription']]
-            #new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
-            json_df = json_df.append(new_studies_df, ignore_index=True)
+            if studydescription.casefold() == 'All':
+                json_df = json_df.append(new_studies_df, ignore_index=True)
+            else:
+                new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
+                json_df = json_df.append(new_df, ignore_index=True)
         elif file.suffix == '.csv':
             data = pd.read_csv(file)
             csv_df = csv_df.append(data, ignore_index=True)
