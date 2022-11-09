@@ -171,7 +171,7 @@ There are two ways to check the contents of your project, depending on what you 
   - Select 'Spreadsheet'
     - This will download a spreadsheet with a list of all subjects and the number of sessions held for each subject. 
 - To get a list of all session names contained in the project:
-  - Write the following into your browser:``https://sp-pr-flipml01.gstt.local/REST/projects/<INSERT YOUR XNAT PROJECT ID HERE>/experiments``
+  - Write the following into your browser:`https://sp-pr-flipml01.gstt.local/REST/projects/<INSERT YOUR XNAT PROJECT ID HERE>/experiments`
     - You can find your XNAT project ID on the project landing page in the Details section under ID 
   - This will open an HTML site of all experiments contained in the project
   - Copy the contents into a text file
@@ -185,9 +185,28 @@ There are two ways to check the contents of your project, depending on what you 
 
 <!-- ACCESSION NUMBER TRACE -->
 ### Accession number trace
+You can use the `report.py` script [here](https://github.com/GSTT-CSC/XNAT/blob/46a68b5e47756ec6026bd9b5ee37dbc92235abcb/xnat-csc/scripts/report.py) to map the original CSV file(s) submitted to XNAT's Swagger UI to trace accession numbers based on patient ID and study date(s).
+
+The script assumes that the CSV file(s) is in the format Swagger/XNAT's REST API accepts for `/dqr/query/batch`, e.g. study dates are formatted as YYYYMMDD.
+
+To run the script:
+- Place the CSV file(s) and Swagger response JSON file(s) in a single folder
+- Run `python report.py <DIRECTORY PATH> accession-trace <STUDY DESCRIPTION FILTER> <OUTPUT FILENAME>`
+  - If you would like to **not** filter the JSON response results based on a certain study description, i.e. return all results, insert "All".
+
+For help, run `python report.py <DIRECTORY PATH> ingestion-status -h `
 
 <!-- INGESTION STATUSES -->
 ### Ingestion statuses
+You can also use the `report.py` script [here](https://github.com/GSTT-CSC/XNAT/blob/46a68b5e47756ec6026bd9b5ee37dbc92235abcb/xnat-csc/scripts/report.py) to assign an ingestion status based on:
+- An XNAT project's [spreadsheet](#project-contents), i.e. which contains a list of all subjects and the number of sessions held for each subject
+- XNAT's Swagger UI response JSON file(s) based on CSV file(s) submitted for subjects that were not successfully ingested
+
+To run the script:
+- Place the project's spreadsheet CSV file and Swagger response JSON file(s) in a single folder
+- Run `python report.py <DIRECTORY PATH> ingestion-status <OUTPUT FILENAME>`
+
+For help, run `python report.py <DIRECTORY PATH> ingestion-status -h `
 
 <!-- RESOURCES -->
 ## Resources
