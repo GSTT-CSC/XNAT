@@ -30,12 +30,12 @@ def parse_arguments():
 
     # Subparser for swagger-report
     parser_sr = subparsers.add_parser('ingestion-status')
-    parser_sr.add_argument('failure_json', metavar='JSON filepath', type=str, action="store",
-                           help='Path to JSON response from Swagger UI in XNAT containing unsuccessfully-ingested'
-                                ' accession IDs')
-    parser_sr.add_argument('success_csv', metavar='CSV filepath', type=str, action="store",
-                           help='Path to CSV downloaded from from Subject > Options > Spreadsheet in the Project page'
-                                ' in XNAT containing successfully-ingested accession IDs')
+    # parser_sr.add_argument('failure_json', metavar='JSON filepath', type=str, action="store",
+    #                        help='Path to JSON response from Swagger UI in XNAT containing unsuccessfully-ingested'
+    #                             ' accession IDs')
+    # parser_sr.add_argument('success_csv', metavar='CSV filepath', type=str, action="store",
+    #                        help='Path to CSV downloaded from from Subject > Options > Spreadsheet in the Project page'
+    #                             ' in XNAT containing successfully-ingested accession IDs')
     # parser_sr.add_argument('username', metavar='username', type=str, action="store", help='Username')
     parser_sr.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
 
