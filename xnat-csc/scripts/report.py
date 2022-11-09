@@ -29,7 +29,7 @@ def parse_arguments():
     parse_at.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
 
     # Subparser for swagger-report
-    parser_sr = subparsers.add_parser('swagger-report')
+    parser_sr = subparsers.add_parser('ingestion-status')
     parser_sr.add_argument('failure_json', metavar='JSON filepath', type=str, action="store",
                            help='Path to JSON response from Swagger UI in XNAT containing unsuccessfully-ingested'
                                 ' accession IDs')
@@ -193,7 +193,7 @@ if __name__ == "__main__":
         print("\nCreating subject master list with traced accession numbers...\n")
         subject_master_list(p.Path(arguments.dir_path), arguments.study_description, arguments.filename)
     elif arguments.subcommand == "swagger-report":
-        print("\nCreating ingestion report...\n")
+        print("\nCreating ingestion status report...\n")
         swagger_report(arguments.failure_json, arguments.success_csv, arguments.filename)
     else:
         print("\nNo task to be performed.\n")
