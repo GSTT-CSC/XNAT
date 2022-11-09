@@ -29,7 +29,15 @@ and service improvement and evaluation processes.
       </ul>
     </li>
     <li><a href="#high-definition-faces">High definition faces</a></li>
-    <li><a href="#project-contents">Project contents</a></li>
+    <li>
+        <a href="#project-management-tools">Project management tools</a>
+        <ul>
+            <li><a href="#project-contents">Project contents</a></li>
+            <li><a href="#accession-number-trace">Accession number trace</a></li>
+            <li><a href="#ingestion-statuses">Ingestion statuses</a></li>
+        </ul>
+    </li>
+    <li><a href="#project-contents">Helpers</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -147,22 +155,39 @@ Only head MRIs are considered to have sufficient resolution for face rendering (
 have to worry about head CTs. All high definition face images must be post-processed with facemasking. To learn how to do this, please 
 have a look at the Facemasking SOP.
 
+<!-- PROJECT MANAGEMENT TOOLS -->
+## Project Management Tools
+The following sections cover various methods to help track a projects subjects, traced accession numbers based on patient IDs and study dates, and ingestion statuses.
+
 <!-- PROJECT CONTENTS -->
-## Project Contents
+### Project Contents
+There are two ways to check the contents of your project, depending on what you need: 
 
-There are two ways to check the contents of your project, depending on what you need. 
+- To count the sessions:
+  - Open your project in XNAT
+  - In the right-hand corner of the section, click on 'Subjects'
+  - There will be two buttons, i.e. 'Reload' and 'Options' 
+  - Click 'Options' 
+  - Select 'Spreadsheet'
+    - This will download a spreadsheet with a list of all subjects and the number of sessions held for each subject. 
+- To get a list of all session names contained in the project:
+  - Write the following into your browser:``https://sp-pr-flipml01.gstt.local/REST/projects/<INSERT YOUR XNAT PROJECT ID HERE>/experiments``
+    - You can find your XNAT project ID on the project landing page in the Details section under ID 
+  - This will open an HTML site of all experiments contained in the project
+  - Copy the contents into a text file
+  - Save it
+  - Open the file in Excel
+  - Select 'Delimited' in the Text Import Wizard pop-up
+  - Click Next
+  - Ensure the Tab checkbox is ticked
+  - Click Finish
+    - You should have an easy-to-use spreadsheet of sessions contained, the date of each session and the upload date.
 
-To count sessions open your project in XNAT and in the right hand corner of the section 'Subjects' there are two buttons: 
-'Reload' and 'Options'. Click 'Options' and select 'Spreadsheet'. This will download a spreadsheet with a list of all subjects and the number of sessions held for each subject.
+<!-- ACCESSION NUMBER TRACE -->
+### Accession number trace
 
-To get a list of all session names contained in the project, write the following into your browser:
-
-``https://sp-pr-flipml01.gstt.local/REST/projects/PROJECT NAME/experiments``
-
-substituting PROJECT NAME with the ID of your project (found on the landing page of your project in the Details section under ID:).
-This will open a html site of all experiments contained in the project. Copy the contents into a text file, save it, then open it in Excel. 
-Text Import Wizard will appear - select Delimited, click Next, then put a tick in the Tab checkbox and click Finish. You should get an easy-to-use spreadsheet
-of sessions contained, the date of each session and the upload date.
+<!-- INGESTION STATUSES -->
+### Ingestion statuses
 
 <!-- RESOURCES -->
 ## Resources
