@@ -25,17 +25,17 @@ def parse_arguments():
     parse_at = subparsers.add_parser('accession-trace')
     # parse_at.add_argument('username', metavar='username', type=str, action="store", help='Username')
     parse_at.add_argument('study_description', metavar='Study description', type=str, action="store",
-                          help='Study description')
+                          help='Study description to filter on. If you would like to see all, enter "All" ')
     parse_at.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
 
     # Subparser for swagger-report
-    parser_sr = subparsers.add_parser('swagger-report')
-    parser_sr.add_argument('failure_json', metavar='JSON filepath', type=str, action="store",
-                           help='Path to JSON response from Swagger UI in XNAT containing unsuccessfully-ingested'
-                                ' accession IDs')
-    parser_sr.add_argument('success_csv', metavar='CSV filepath', type=str, action="store",
-                           help='Path to CSV downloaded from from Subject > Options > Spreadsheet in the Project page'
-                                ' in XNAT containing successfully-ingested accession IDs')
+    parser_sr = subparsers.add_parser('ingestion-status')
+    # parser_sr.add_argument('failure_json', metavar='JSON filepath', type=str, action="store",
+    #                        help='Path to JSON response from Swagger UI in XNAT containing unsuccessfully-ingested'
+    #                             ' accession IDs')
+    # parser_sr.add_argument('success_csv', metavar='CSV filepath', type=str, action="store",
+    #                        help='Path to CSV downloaded from from Subject > Options > Spreadsheet in the Project page'
+    #                             ' in XNAT containing successfully-ingested accession IDs')
     # parser_sr.add_argument('username', metavar='username', type=str, action="store", help='Username')
     parser_sr.add_argument('filename', metavar='Output filename', type=str, action="store", help='Output filename')
 
@@ -165,8 +165,11 @@ def subject_master_list(dirpath, studydescription, reportname):
 
             new_studies_df = new_studies_df[['PatientID', 'AccessionNumber', 'StudyDate', 'StudyID', 'StudyInstanceUID',
                                              'StudyDescription']]
-            #new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
-            json_df = json_df.append(new_studies_df, ignore_index=True)
+            if studydescription.casefold() == 'All':
+                json_df = json_df.append(new_studies_df, ignore_index=True)
+            else:
+                new_df = new_studies_df.loc[new_studies_df['StudyDescription'].str.casefold() == studydescription.casefold()]
+                json_df = json_df.append(new_df, ignore_index=True)
         elif file.suffix == '.csv':
             data = pd.read_csv(file)
             csv_df = csv_df.append(data, ignore_index=True)
@@ -190,7 +193,7 @@ if __name__ == "__main__":
         print("\nCreating subject master list with traced accession numbers...\n")
         subject_master_list(p.Path(arguments.dir_path), arguments.study_description, arguments.filename)
     elif arguments.subcommand == "swagger-report":
-        print("\nCreating ingestion report...\n")
+        print("\nCreating ingestion status report...\n")
         swagger_report(arguments.failure_json, arguments.success_csv, arguments.filename)
     else:
         print("\nNo task to be performed.\n")
