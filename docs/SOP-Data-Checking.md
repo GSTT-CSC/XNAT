@@ -187,6 +187,9 @@ There are two ways to check the contents of your project, depending on what you 
 ### Accession number trace
 You can use the `report.py` script [here](https://github.com/GSTT-CSC/XNAT/blob/46a68b5e47756ec6026bd9b5ee37dbc92235abcb/xnat-csc/scripts/report.py) to map the original CSV file(s) submitted to XNAT's Swagger UI to trace accession numbers based on patient ID and study date(s).
 
+> :warning: Please ensure you are using Python >= 3.0 and have installed the required packages beforehand.
+> To install the required packages, run `pip install -r requirements.txt`.
+
 The script assumes that the CSV file(s) is in the format Swagger/XNAT's REST API accepts for `/dqr/query/batch`, e.g. study dates are formatted as YYYYMMDD.
 
 To run the script:
@@ -194,10 +197,17 @@ To run the script:
 - Run `python report.py <DIRECTORY PATH> accession-trace <STUDY DESCRIPTION FILTER> <OUTPUT FILENAME>`
   - If you would like to **not** filter the JSON response results based on a certain study description, i.e. return all results, insert "All".
 
+> :warning: The current version of the script requires the CSV files to contain **Patient ID** and **Study Date** columns.
+> The values in the **Study Date** column should be entered as **YYYYMMDD**.
+
 For help, run `python report.py <DIRECTORY PATH> ingestion-status -h `
+
 
 <!-- INGESTION STATUSES -->
 ### Ingestion statuses
+> :warning: Please ensure you are using Python >= 3.0 and have installed the required packages beforehand.
+> To install the required packages, run `pip install -r requirements.txt`.
+
 You can also use the `report.py` script [here](https://github.com/GSTT-CSC/XNAT/blob/46a68b5e47756ec6026bd9b5ee37dbc92235abcb/xnat-csc/scripts/report.py) to assign an ingestion status based on:
 - An XNAT project's [spreadsheet](#project-contents), i.e. which contains a list of all subjects and the number of sessions held for each subject
 - XNAT's Swagger UI response JSON file(s) based on CSV file(s) submitted for subjects that were not successfully ingested
