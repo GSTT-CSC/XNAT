@@ -173,11 +173,17 @@ def subject_master_list(dirpath, studydescription, reportname):
         elif file.suffix == '.csv':
             data = pd.read_csv(file)
             csv_df = csv_df.append(data, ignore_index=True)
-    csv_df.rename(columns={'Patient ID': 'PatientID', 'Study Date': 'StudyDate'}, inplace=True)
+    csv_df.rename(columns={'Patient ID': 'PatientID',
+                           # 'Study Date': 'StudyDate'
+                           }, inplace=True)
     #csv_df['StudyDate'] = pd.to_datetime(csv_df['StudyDate'], dayfirst=True)
-    csv_df['StudyDate'] = pd.to_datetime(csv_df['StudyDate'].astype(str), format='%Y%m%d')
+    # csv_df['StudyDate'] = pd.to_datetime(csv_df['StudyDate'].astype(str), format='%Y%m%d')
     json_df['StudyDate'] = pd.to_datetime(json_df['StudyDate'], dayfirst=True)
-    final_df = pd.merge(csv_df, json_df, how='left', left_on=['PatientID', 'StudyDate'], right_on=['PatientID', 'StudyDate'])
+    final_df = pd.merge(csv_df, json_df, how='left', left_on=['PatientID'
+        # , 'StudyDate'
+                                                              ], right_on=['PatientID'
+        # , 'StudyDate'
+                                                                           ])
 
     # Relative directory path
     directory = p.Path(__file__).parent
