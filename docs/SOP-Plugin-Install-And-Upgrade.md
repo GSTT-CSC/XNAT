@@ -1,4 +1,4 @@
-[![image](assets/transparent-CSC-logo.png)](https://github.com/GSTT-CSC/XNAT)
+[![image](https://github.com/GSTT-CSC/XNAT/blob/main/assets/CSC-logo-trans-sm.png?raw=true)](https://github.com/GSTT-CSC/XNAT)
 
 # Plugin Upgrade and Install
 
