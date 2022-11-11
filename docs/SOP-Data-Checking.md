@@ -190,15 +190,13 @@ You can use the `report.py` script [here](https://github.com/GSTT-CSC/XNAT/blob/
 > :warning: Please ensure you are using Python >= 3.0 and have installed the required packages beforehand.
 > To install the required packages, run `pip install -r requirements.txt`.
 
-The script assumes that the CSV file(s) is in the format Swagger/XNAT's REST API accepts for `/dqr/query/batch`, e.g. study dates are formatted as YYYYMMDD.
+> :warning: The current version of the script assumes that the CSV file(s) is in the format Swagger/XNAT's REST API accepts for `/dqr/query/batch`, and requires the CSV files to contain **Patient ID** and **Study Date** columns.
+> The values in the **Study Date** column should be entered as **YYYYMMDD**.
 
 To run the script:
 - Place the CSV file(s) and Swagger response JSON file(s) in a single folder
 - Run `python report.py <DIRECTORY PATH> accession-trace <STUDY DESCRIPTION FILTER> <OUTPUT FILENAME>`
   - If you would like to **not** filter the JSON response results based on a certain study description, i.e. return all results, insert "All".
-
-> :warning: The current version of the script requires the CSV files to contain **Patient ID** and **Study Date** columns.
-> The values in the **Study Date** column should be entered as **YYYYMMDD**.
 
 For help, run `python report.py <DIRECTORY PATH> ingestion-status -h `
 
