@@ -91,7 +91,8 @@ for (( i=0; i<length; i++ )); do
 #  printf "Hello %s" "${subset[i]}"
 #  for j in $directory; do
 #    printf "Looking at folder: %s\n\n" "$j"
-    rm -r $directory/!(1)/
+# Deletes all folders that aren't "1" or "1-US1"
+    rm -r $directory/!(1|1-US1)/
 #  done
 done
 
@@ -99,7 +100,7 @@ done
 printf '################## DECOMPRESSING DATA ##################\n\n'
 for (( i=0; i<length; i++ )); do
   directory="${subset[i]}/SCANS/*/secondary/*"
-  printf "Hello %s" "${subset[i]}"
+  printf "Looking at %s" "${subset[i]}"
   for j in $directory; do
     printf "Decompressing file: %s\n\n" "$j"
 #    # Print out stderr to file
