@@ -46,19 +46,20 @@ def send_lunit_data(session, experiment, pacs):
     # else:
     for scan in experiment.scans.values():
         logging.info(f'\t\tExporting scan to destination: {scan.uri}')
-        attempts = 0
+        attempt = 0
         n_attempts = 5
-        while attempts < n_attempts:
+        while attempt < n_attempts:
             try:
-                response = session.put('/xapi/dqr/export/',
-                                       query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+                query = {'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id}
+                logging.info(f'API request: {"/xapi/dqr/export/"} {query}')
+                response = session.put('/xapi/dqr/export/', query=query)
                 logging.debug(response)
 
             except Exception as e:
-                logging.info(f'Send failed - attempt {attempts}')
-                attempts += 1
+                logging.info(f'Send failed - attempt {attempt}')
+                attempt += 1
                 time.sleep(delay)
-                if attempts == n_attempts:
+                if attempt == n_attempts:
                     raise Exception(f'Image loader failed on {scan} : {session} after 3 retries due to {e}')
 
         time.sleep(delay)
