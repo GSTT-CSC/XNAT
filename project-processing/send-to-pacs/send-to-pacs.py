@@ -58,6 +58,8 @@ def send_lunit_data(session, experiment, pacs):
                 logging.info(f'Send failed - attempt {attempts}')
                 attempts += 1
                 time.sleep(delay)
+                if attempts == n_attempts:
+                    raise Exception(f'Image loader failed on {scan} : {session} after 3 retries due to {e}')
 
         time.sleep(delay)
 
