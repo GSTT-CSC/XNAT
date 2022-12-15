@@ -46,9 +46,19 @@ def send_lunit_data(session, experiment, pacs):
     # else:
     for scan in experiment.scans.values():
         logging.info(f'\t\tExporting scan to destination: {scan.uri}')
-        response = session.put('/xapi/dqr/export/',
-                               query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-        logging.debug(response)
+        attempts = 0
+        n_attempts = 5
+        while attempts < n_attempts:
+            try:
+                response = session.put('/xapi/dqr/export/',
+                                       query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+                logging.debug(response)
+
+            except Exception as e:
+                logging.info(f'Send failed - attempt {attempts}')
+                attempts += 1
+                time.sleep(delay)
+
         time.sleep(delay)
 
 
