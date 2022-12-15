@@ -54,6 +54,7 @@ def send_lunit_data(session, experiment, pacs):
                 logging.info(f'API request: {"/xapi/dqr/export/"} {query}')
                 response = session.put('/xapi/dqr/export/', query=query)
                 logging.debug(response)
+                break
 
             except Exception as e:
                 logging.info(f'Send failed - attempt {attempt}')
