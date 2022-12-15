@@ -38,18 +38,18 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
 
 def send_lunit_data(session, experiment, pacs):
     # check if any series called '99999999' is already in session
-    if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
-        logging.info(f'\t\tLunit data already available in {experiment}')
-        pass
-    elif len([x for x in [scan.id for scan in experiment.scans.values()] if 'ORIGINAL' in experiment.scans[x].dicom_dump(fields='00080008')[0]['value']]) > 1:
-        logging.info(f'\t\tExcluding due to multiple ORIGINAL images in {experiment}')
-    else:
-        for scan in experiment.scans.values():
-            logging.info(f'\t\tExporting scan to destination: {scan.uri}')
-            response = session.put('/xapi/dqr/export/',
-                                   query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-            logging.debug(response)
-            time.sleep(delay)
+    # if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
+    #     logging.info(f'\t\tLunit data already available in {experiment}')
+    #     pass
+    # elif len([x for x in [scan.id for scan in experiment.scans.values()] if 'ORIGINAL' in experiment.scans[x].dicom_dump(fields='00080008')[0]['value']]) > 1:
+    #     logging.info(f'\t\tExcluding due to multiple ORIGINAL images in {experiment}')
+    # else:
+    for scan in experiment.scans.values():
+        logging.info(f'\t\tExporting scan to destination: {scan.uri}')
+        response = session.put('/xapi/dqr/export/',
+                               query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+        logging.debug(response)
+        time.sleep(delay)
 
 
 if __name__ == '__main__':
