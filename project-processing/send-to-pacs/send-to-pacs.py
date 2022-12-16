@@ -31,9 +31,10 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
         logging.info(f'Sending data in project {project} to PACS destination: {pacs}')
         for subject in project.subjects.values():
             logging.info(f'Subject: {subject}')
-            for experiment in subject.experiments.values():
-                logging.info(f'\tExperiment: {experiment}')
-                send_lunit_data(session, experiment, pacs)
+            if int(subject.label) > 705:  # filter to avoid data that has already been sent
+                for experiment in subject.experiments.values():
+                    logging.info(f'\tExperiment: {experiment}')
+                    send_lunit_data(session, experiment, pacs)
 
 
 def send_lunit_data(session, experiment, pacs):
@@ -54,6 +55,7 @@ def send_lunit_data(session, experiment, pacs):
                 response = session.put('/xapi/dqr/export/', query=query)
                 logging.debug(response)
                 logging.debug(query)
+
                 break
 
             except Exception as e:
