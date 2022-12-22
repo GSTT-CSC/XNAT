@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''import-dqr.py
+'''REST-api-get-data.py
 
 Usage:
     ./REST-api-get-data.sh CSV.csv PACSID OUTPUT.json
