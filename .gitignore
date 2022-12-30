@@ -2,3 +2,4 @@
 .idea/
 data/
 .DS_Store
+*.csv
