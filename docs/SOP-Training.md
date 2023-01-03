@@ -47,12 +47,14 @@ Before individuals are granted access to XNAT, they are required to undergo a ma
 
 Similar to other GSTT mandatory training, existing XNAT users are also required to periodically retake this training to update their training compliance records (see the CSC Quality Management System (QMS) repository [here](https://github.com/GSTT-CSC/CSC-QMS) for more information).   
 
+<!-- PREREQUISITES -->
 ### Prerequisites
 GSTT XNAT users are required to:
 - Have a valid GSTT email address
 - Have their Information Governance (IG) training up-to-date
 - Access the platform whilst connected to the Trust VPN, i.e. either on a Trust computer on-site or via Citrix
 
+<!-- POSTTRAINING -->
 ### Post-training
 Once GSTT XNAT users have undergone the initial training session, they will be provided with a short quiz to test their knowledge. The required pass rate is 80% and users are welcome to both re-submit their answers and reach out to an XNAT administrator for more information and/or further training. Once an XNAT user has acquired a passing mark, the submitted document forms a part of your training log and should be kept for future reference.
 
