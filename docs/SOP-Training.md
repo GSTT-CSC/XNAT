@@ -15,16 +15,16 @@ Tracked documentation on mandatory XNAT training for all users.
       <a href="#background">Background</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#posttraining">Post-training</a></li>
       </ul>
     </li>
     <li>
         <a href="#overview">Overview</a>
         <ul>
           <li><a href="#pii">Personally Identifiable Information (PII) and its importance</a></li>
-          <li><a href="#dicom">Digital Imaging and Communications in Medicine (DICOM)</a></li>
+          <li><a href="#dicom">DICOM (Digital Imaging and Communications in Medicine)</a></li>
           <li><a href="#deidentification">De-identification, anonymisation, and pseudo-anonymisation</a></li>
-          <li><a href="#roleofxnat">Role of XNAT in Guy's and St Thomas' NHS Foundation Trust (GSTT)</a></li>
-          <li><a href="#xnat">XNAT</a></li> 
+          <li><a href="#xnat">XNAT in Guy's and St Thomas' NHS Foundation Trust (GSTT)</a></li>
             <ul>
                 <li><a href="#useraccess">User access</a></li>
                 <li><a href="#dataimport">Data import</a></li>
@@ -40,8 +40,6 @@ Tracked documentation on mandatory XNAT training for all users.
   </ol>
 </details>
 
-
-
 <!-- BACKGROUND -->
 ## Background
 
@@ -55,6 +53,13 @@ GSTT XNAT users are required to:
 - Have their Information Governance (IG) training up-to-date
 - Access the platform whilst connected to the Trust VPN, i.e. either on a Trust computer on-site or via Citrix
 
+### Post-training
+Once GSTT XNAT users have undergone the initial training session, they will be provided with a short quiz to test their knowledge. The required pass rate is 80% and users are welcome to both re-submit their answers and reach out to an XNAT administrator for more information and/or further training. Once an XNAT user has acquired a passing mark, the submitted document forms a part of your training log and should be kept for future reference.
+
+Additionally, an XNAT administrator will then:
+- Create their XNAT user account and temporary password
+- Provide their GSTT XNAT account username, password, and project scope, i.e. which projects they have access to, via email
+
 <!-- OVERVIEW -->
 ## Overview
 The training session covers a high-level overview of XNAT, data that can be imported, processed, and exported, data governance, and recommended best practices. The training session is delivered virtually over Microsoft Teams, and usually takes around 30 to 60 minutes to complete a walkthrough of the following concepts.
@@ -67,24 +72,37 @@ We recommend referring to NHS Digital's resources [here](https://digital.nhs.uk/
 
 This is includes:
 - Using de-identification, anonymisation, and/or pseudo-anonymisation scripts in XNAT or as part of data processing post-import if required, e.g. as part of project approvals
-- Ensuring patients who have opted out of use of their data for secondary purposes, i.e. indirect care such as research, are removed from related projects
+- Ensuring patients who have opted out of use of their data for secondary purposes, i.e. indirect care such as research or training artificial intelligence (AI) algorithms, are removed from related projects
 - Storing and transferring data exported from XNAT on secure devices and via secure transfer protocols approved by the Trust 
 
 <!-- DICOM -->
-### Digital Imaging and Communications in Medicine (DICOM)
+### DICOM (Digital Imaging and Communications in Medicine)
+DICOM (Digital Imaging and Communications in Medicine) is an international standard format for medical imaging data storage, retrieval, processing and transfer. DICOM images consist of the actual acquired image as a set of pixels and a DICOM header. Data coded within the DICOM header are a series of attributes describing the scan and patient. Each attribute is tagged with a unique DICOM tag which consists of a group and element number, and each tag has a name to identify the type of information (or attribute) contained within the tag. This principle of data tagging allows DICOMs to be compared, transferred, stored and queried.
 
 <!-- DEIDENTIFICATION -->
 ### De-identification, anonymisation, and pseudo-anonymisation
+Before any medical data can be used in projects for secondary purposes, i.e.  i.e. indirect care such as research or training AI algorithms, it must first be **completely de-identified/anonymised such that no data used can be traced back to any individual**. To do this, the DICOM tags need to be altered, deleted or manipulated in such a way that the image no longer describes the individual. 
 
-<!-- ROLE OF XNAT -->
-### Role of XNAT in Guy's and St Thomas' NHS Foundation Trust (GSTT)
+However, because (1) there are many DICOM tags within a DICOM header and (2) it is not always straightforward to determine what is and is not identifiable information, [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf) was created. This outlines best de-identification practices for purposes of clinical trials, and we have adopted this same standard for our de-identification approach (see [here](https://github.com/GSTT-CSC/XNAT/tree/main/docs#anonymisation) for more information).
 
 <!-- XNAT -->
-### XNAT
+### XNAT in Guy's and St Thomas' NHS Foundation Trust (GSTT)
+XNAT is a virtual platform capable of storing and managing medical images and associated data. Within GSTT, it forms a part of the local secure enclave for the purpose of federated learning in artificial intelligence projects. The data is ingested from PACS into XNAT where it is anonymised and sorted into relevant projects, ensuring data is only visible to those who need it, and allowing for data deletion upon project completion.
 
 <!-- USER ACCESS -->
 #### User access
+> ⚠️ Remember: To access GSTT's XNAT, users must be (1) connected to the Trust VPN either via a Trust computer on-site or via Citrix and (2) have a valid XNAT user account. 
 
+- Users should open Google Chrome (preferred browser as it doesn't work well on Internet Explorer, Edge, etc.), and navigate to https://sp-pr-fipml01.gstt.local
+- They can then navigate to the project(s) they have access to by clicking on _Browse > My Projects_ in the top-hand navigation bar
+  - If the project does not exist yet, please contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) and/or [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk) to create it
+
+From the project's main page, users can:
+ - View live progress of data ingestion by clicking on _View Prearchive_ in the right-hand sidebar 
+ - Ingest a small dataset, i.e. less than or equal to 100 studies, via the Data Query Retrieve (DQR) route by clicking on _Import From PACS_ in the right-hand sidebar
+   - This will open a page wherein users can [query Sectra PACS based on search criteria](https://github.com/GSTT-CSC/XNAT/tree/main/docs#entering-the-search-criteria), or [import a CSV file of studies to be ingested](https://github.com/GSTT-CSC/XNAT/tree/main/docs#importing-a-csv-file) 
+   - If you have a larger dataset to upload, we recommend using the XNAT REST API. Please reach out to [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) and/or [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk) for more information on this process
+ - View subjects successfully ingested into the XNAT project at the bottom of the project's main page under _Subjects_
 <!-- DATA IMPORT -->
 #### Data import
 There are several methods to import data from a PACS into XNAT, which are detailed [here](https://github.com/GSTT-CSC/XNAT/blob/main/docs/SOP-Data-Import.md) and include:
@@ -96,9 +114,9 @@ There are several methods to import data from a PACS into XNAT, which are detail
 <!-- DATA PROCESSING POST-IMPORT -->
 #### Data processing post-import
 Data processing post-import includes:
-- Anonymisation per DICOM tags in XNAT
+- De-identification/anonymisation per DICOM tags in XNAT (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/helpers/Project-specific%20anon%20script.txt))
 - Face masking, i.e. obfuscate personally identifiable facial features
-- De-identification of ultrasounds, i.e. obfuscate burnt-in data
+- De-identification of ultrasounds, i.e. obfuscate burnt-in data (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/scripts/pixelcleaning.py))
 
 There are also options available in the XNAT platform itself, such as the [XNAT Open Health Imaging Foundation (OHIF) Viewer](https://wiki.xnat.org/documentation/xnat-ohif-viewer/using-the-xnat-ohif-viewer-122978515.html) and querying structured data.
 <!-- DATA EXPORT -->
