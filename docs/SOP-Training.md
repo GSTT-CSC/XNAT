@@ -123,7 +123,7 @@ Data processing post-import includes:
 
 There are also options available in the XNAT platform itself, such as the [XNAT Open Health Imaging Foundation (OHIF) Viewer](https://wiki.xnat.org/documentation/xnat-ohif-viewer/using-the-xnat-ohif-viewer-122978515.html) and querying structured data.
 <!-- DATA EXPORT -->
-<a name="dataexport"><h4>Data export/h4></a>
+<a name="dataexport"><h4>Data export</h4></a>
 There are several ways to download from XNAT, such as downloading:
 - Directly
 - In bulk
