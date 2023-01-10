@@ -43,38 +43,39 @@ Tracked documentation on mandatory XNAT training for all users.
 <!-- BACKGROUND -->
 <a name="background"><h2>Background</h2></a>
 
-Before individuals are granted access to XNAT, they are required to undergo a mandatory training session, which is delivered by a member of the Clinical Scientific Computing (CSC) team who has XNAT administrator privileges. These sessions are usually scheduled as and when new user requests are submitted to the CSC team.  
+Before individuals are granted access to XNAT, they are required to undergo a mandatory training session, which is delivered by a member of the Clinical Scientific Computing (CSC) team who has XNAT administrator privileges. These sessions are scheduled as and when new user requests are submitted to the CSC team.  
 
 Similar to other GSTT mandatory training, existing XNAT users are also required to periodically retake this training to update their training compliance records (see the CSC Quality Management System (QMS) repository [here](https://github.com/GSTT-CSC/CSC-QMS) for more information).   
 
 <!-- PREREQUISITES -->
 <a name="prerequisites"><h3>Prerequisites</h3></a>
-GSTT XNAT users are required to:
+GSTT XNAT users must:
 - Have a valid GSTT email address
 - Have their Information Governance (IG) training up-to-date
-- Access the platform whilst connected to the Trust VPN, i.e. either on a Trust computer on-site or via Citrix
+- Have ordinary access to the data they will be working with (e.g. PACS access)
+- Be able to access the platform whilst connected to the Trust VPN, i.e. either on a Trust computer on-site or via Citrix
 
 <!-- POST-TRAINING -->
 <a name="posttraining"><h3>Post-training</h3></a>
-Once GSTT XNAT users have undergone the initial training session, they will be provided with a short quiz to test their knowledge. The required pass rate is 80% and users are welcome to both re-submit their answers and reach out to an XNAT administrator for more information and/or further training. Once an XNAT user has acquired a passing mark, the submitted document forms a part of your training log and should be kept for future reference.
+Once GSTT XNAT users have undergone the initial training session, they will be provided with a short quiz to test their knowledge. The required pass rate is 80% and users are welcome to both re-submit their answers and reach out to an XNAT administrator for more information and/or further training. Once an XNAT user has acquired a passing mark, the submitted document forms a part of their training log and should be kept for future reference.
 
 Additionally, an XNAT administrator will then:
 - Create their XNAT user account and temporary password
-- Provide their GSTT XNAT account username, password, and project scope, i.e. which projects they have access to, via email
+- Provide their GSTT XNAT account username, password, project scope, i.e. which projects they have access to, and a link to GitHub XNAT repository via email
 
 <!-- OVERVIEW -->
 <a name="overview"><h2>Overview</h2></a>
-The training session covers a high-level overview of XNAT, data that can be imported, processed, and exported, data governance, and recommended best practices. The training session is delivered virtually over Microsoft Teams, and usually takes around 30 to 60 minutes to complete a walkthrough of the following concepts.
+The training session covers a high-level overview of XNAT, data that can be imported, processed, and exported, data governance, and recommended best practices. The training session is delivered virtually over Microsoft Teams, and usually takes around 30 minutes to complete a walkthrough of the following concepts.
 
 <!-- PII -->
 <a name="pii"><h3>Personally Identifiable Information (PII) and its importance</h3></a>
-Personally identifiable information (PII) is information personal to an individual and enables the identification (or re-identification) of that individual. In healthcare, patient data includes PII, such as their demographic information collected upon their initial registration with the Trust, administrative information collected when their appointments are scheduled, and clinical information collected throughout their treatment at the Trust.
+Personally identifiable information (PII) is information personal to an individual and enables the identification (or re-identification) of that individual. PII in healthcare includes directly identifiable information such as name and address of the patient, as well as indirectly identifiable information such as the time and place of an appointment, imaging session labels, names of referrers and so on.
 
-We recommend referring to NHS Digital's resources [here](https://digital.nhs.uk/services/national-data-opt-out/understanding-the-national-data-opt-out/confidential-patient-information) and [here](https://digital.nhs.uk/services/national-data-opt-out/operational-policy-guidance-document/appendix-6-confidential-patient-information-cpi-definition) for more information, but given the importance of PII and the potential negative impact when inappropriately used, XNAT users are required to bear this in mind and adhere to best practices, e.g. de-identification, data transfer/sharing, etc., throughout their use of the platform.
+We recommend referring to NHS Digital's resources [here](https://digital.nhs.uk/services/national-data-opt-out/understanding-the-national-data-opt-out/confidential-patient-information) and [here](https://digital.nhs.uk/services/national-data-opt-out/operational-policy-guidance-document/appendix-6-confidential-patient-information-cpi-definition) for more information, but given the importance of PII and the potential negative impact when inappropriately used, XNAT users are required to bear this in mind and adhere to best practices, e.g. de-identification, data transfer/sharing, etc., throughout their use of routinely acquired medical data.
 
 This is includes:
 - Using de-identification, anonymisation, and/or pseudo-anonymisation scripts in XNAT or as part of data processing post-import if required, e.g. as part of project approvals
-- Ensuring patients who have opted out of use of their data for secondary purposes, i.e. indirect care such as research or training artificial intelligence (AI) algorithms, are removed from related projects
+- Ensuring patients who have opted out of use of their data for secondary purposes, i.e. indirect care such as research or training artificial intelligence (AI) algorithms, are excluded from all projects
 - Storing and transferring data exported from XNAT on secure devices and via secure transfer protocols approved by the Trust 
 
 <!-- DICOM -->
@@ -83,19 +84,19 @@ DICOM (Digital Imaging and Communications in Medicine) is an international stand
 
 <!-- DEIDENTIFICATION -->
 <a name="deidentification"><h3>De-identification, anonymisation, and pseudo-anonymisation</h3></a>
-Before any medical data can be used in projects for secondary purposes, i.e.  i.e. indirect care such as research or training AI algorithms, it must first be **completely de-identified/anonymised such that no data used can be traced back to any individual**. To do this, the DICOM tags need to be altered, deleted or manipulated in such a way that the image no longer describes the individual. 
+Before any medical data can be used in projects for secondary purposes, i.e. indirect care such as research or training AI algorithms, it must first be **completely de-identified/anonymised such that no data used can be traced back to any individual**. To do this, the DICOM tags need to be altered, deleted or manipulated in such a way that the image cannot be used to identify the individual. 
 
 However, because (1) there are many DICOM tags within a DICOM header and (2) it is not always straightforward to determine what is and is not identifiable information, [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf) was created. This outlines best de-identification practices for purposes of clinical trials, and we have adopted this same standard for our de-identification approach (see [here](https://github.com/GSTT-CSC/XNAT/tree/main/docs#anonymisation) for more information).
 
 <!-- XNAT -->
 <a name="xnat"><h3>XNAT in Guy's and St Thomas' NHS Foundation Trust (GSTT)</h3></a>
-XNAT is a virtual platform capable of storing and managing medical images and associated data. Within GSTT, it forms a part of the local secure enclave for the purpose of federated learning in artificial intelligence projects. The data is ingested from PACS into XNAT where it is anonymised and sorted into relevant projects, ensuring data is only visible to those who need it, and allowing for data deletion upon project completion.
+XNAT is a picture archiving platform (a PACS system) capable of storing and managing medical images and associated data. Within GSTT, it forms a part of the local secure enclave for the purpose of federated learning in AI projects. The data is extracted from clinical PACS systems into XNAT where it is anonymised and sorted into relevant projects, ensuring data is only visible to those who are authorised to see it, and allowing for data deletion upon project completion.
 
 <!-- USER ACCESS -->
 <a name="useraccess"><h4>User access</h4></a>
 > ⚠️ Remember: To access GSTT's XNAT, users must be (1) connected to the Trust VPN either via a Trust computer on-site or via Citrix and (2) have a valid XNAT user account. 
 
-- Users should open Google Chrome (preferred browser as it doesn't work well on Internet Explorer, Edge, etc.), and navigate to https://sp-pr-fipml01.gstt.local
+- Users should open Google Chrome (preferred browser as it doesn't work well on Internet Explorer, Edge, etc.), and navigate to https://sp-pr-flipml01.gstt.local
 - They can then navigate to the project(s) they have access to by clicking on _Browse > My Projects_ in the top-hand navigation bar
   - If the project does not exist yet, please contact [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) and/or [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk) to create it
 
@@ -103,31 +104,30 @@ From the project's main page, users can:
  - View live progress of data ingestion by clicking on _View Prearchive_ in the right-hand sidebar 
  - Ingest a small dataset, i.e. less than or equal to 100 studies, via the Data Query Retrieve (DQR) route by clicking on _Import From PACS_ in the right-hand sidebar
    - This will open a page wherein users can [query Sectra PACS based on search criteria](https://github.com/GSTT-CSC/XNAT/tree/main/docs#entering-the-search-criteria), or [import a CSV file of studies to be ingested](https://github.com/GSTT-CSC/XNAT/tree/main/docs#importing-a-csv-file) 
-   - If you have a larger dataset to upload, we recommend using the XNAT REST API. Please reach out to [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) and/or [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk) for more information on this process
+   - If you have a larger dataset to upload, we recommend using the XNAT REST API. Please reach out to [Dika](mailto:Dijana.Vilic@gstt.nhs.uk) and/or [Haleema](mailto:Haleema.AlJazzaf@gstt.nhs.uk) for more information on this process as it is only available with administration rights
  - View subjects successfully ingested into the XNAT project at the bottom of the project's main page under _Subjects_
 
 <!-- DATA IMPORT -->
 <a name="dataimport"><h4>Data import</h4></a>
 There are several methods to import data from a PACS into XNAT, which are detailed [here](https://github.com/GSTT-CSC/XNAT/blob/main/docs/SOP-Data-Import.md) and include:
-- Data query retrieve (DQR)
-- REST API
-- Scripting
-- On the XNAT graphical user interface (GUI), i.e. CSV upload
+- Data query retrieve (DQR) using a CSV (limited to simple data in limited amounts)
+- REST API (limited to around 50-100 imaging sessions at a time)
+- Scripting (limitless but only available with headnode access and advanced training)
            
 <!-- DATA PROCESSING POST-IMPORT -->
-<a name="dataprocessing"><h4>Data processing post-import</h4></a>
-Data processing post-import includes:
-- De-identification/anonymisation per DICOM tags in XNAT (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/helpers/Project-specific%20anon%20script.txt))
-- Face masking, i.e. obfuscate personally identifiable facial features
-- De-identification of ultrasounds, i.e. obfuscate burnt-in data (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/scripts/pixelcleaning.py))
+<a name="dataprocessing"><h4>Data processing during/post-import</h4></a>
+Data processing during/post-import includes:
+- De-identification/anonymisation per DICOM tags in XNAT happens on data import (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/helpers/Project-specific%20anon%20script.txt))
+- Face masking, i.e. obfuscate personally identifiable facial features in high-definition MRI head images post-import
+- De-identification of ultrasounds, i.e. obfuscate burnt-in data post-import outside of XNAT (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/scripts/pixelcleaning.py))
 
-There are also options available in the XNAT platform itself, such as the [XNAT Open Health Imaging Foundation (OHIF) Viewer](https://wiki.xnat.org/documentation/xnat-ohif-viewer/using-the-xnat-ohif-viewer-122978515.html) and querying structured data.
+You can view, annotate or contour images within XNAT platform itself using [XNAT Open Health Imaging Foundation (OHIF) Viewer](https://wiki.xnat.org/documentation/xnat-ohif-viewer/using-the-xnat-ohif-viewer-122978515.html).
 <!-- DATA EXPORT -->
 <a name="dataexport"><h4>Data export</h4></a>
-There are several ways to download from XNAT, such as downloading:
-- Directly
-- In bulk
-- Via the server backend
+There are several ways to download data from XNAT, such as downloading:
+- Directly - one image at a time from Experiment level 
+- In bulk - project-wide by clicking on 'download images' on the right-hand side of project landing page (limited by size)
+- Via the server backend - you need to have root privileges on the headnode for this - speak to XNAT administrators if you need this type of data export (not limited)
 
 <!-- TIPS AND TRICKS -->
 <a name="tipsandtricks"><h4>Tips and tricks</h4></a>
