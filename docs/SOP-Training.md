@@ -118,7 +118,7 @@ There are several methods to import data from a PACS into XNAT, which are detail
 <a name="dataprocessing"><h4>Data processing during/post-import</h4></a>
 Data processing during/post-import includes:
 - De-identification/anonymisation per DICOM tags in XNAT happens on data import (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/helpers/Project-specific%20anon%20script.txt))
-- Face masking, i.e. obfuscate personally identifiable facial features in high-definition MRI head images post-import <br> <p align="center"><img width=60% height=60% src="../assets/facemasking.png"></p>
+- Face masking, i.e. obfuscate personally identifiable facial features in high-definition MRI head images post-import <br> <p align="center"><img width=50% height=50% src="../assets/facemasking.png"></p>
 - De-identification of ultrasounds, i.e. obfuscate burnt-in data post-import outside of XNAT with [`deid`](https://pydicom.github.io/deid/getting-started/dicom-pixels/) (see example [here](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/scripts/pixelcleaning.py)) <br> <p align="center"><img width=60% height=60% src="../assets/deid.png"></p>
 
 You can view, annotate or contour images within XNAT platform itself using [XNAT Open Health Imaging Foundation (OHIF) Viewer](https://wiki.xnat.org/documentation/xnat-ohif-viewer/using-the-xnat-ohif-viewer-122978515.html).
