@@ -63,6 +63,8 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
     cols.pop(cols.index('EXCLUSION_REASON'))
     df = df[['EXCLUDE', 'EXCLUSION_REASON'] + cols]
 
+    df = df.loc[~df.index.duplicated(keep='first')]
+
     out = pd.concat([original_data.set_index('Subject'), df], axis=1).fillna(0)
 
     return out
