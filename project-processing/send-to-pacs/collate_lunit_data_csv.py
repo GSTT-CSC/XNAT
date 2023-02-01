@@ -24,7 +24,6 @@ def extract_header_info(xnat_configuration: dict, original_data:pd.DataFrame = N
                       verify=xnat_configuration['verify'],
                       ) as session:
 
-        #  get list of XNAT PACS destinations
         logging.info(f'Opened XNAT Session: {session}')
         project = session.projects[xnat_configuration["project"]]
 
@@ -152,7 +151,6 @@ if __name__ == '__main__':
                           'project': config['xnat']['PROJECT'],
                           'verify': False}
 
-    destination = config['xnat']['DESTINATION']
     delay = int(config['xnat']['DELAY'])
 
     out = extract_header_info(xnat_configuration=xnat_configuration, original_data=original_data, results_data=results_data)
