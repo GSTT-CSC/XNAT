@@ -27,11 +27,18 @@ f = open(output_file, "w")    # Creates new text file where result will be saved
 for path, sub_dirs, files in os.walk(my_dir):  #Traverses directory recursively through any/all sub folders
     for file in files:
         if file.endswith(".dcm"):
-            file_path = os.path.join(path, file)  #Joins file to path statement
-            fn = pydicom.dcmread(file_path)
-            a = [fn.PatientName, fn.PatientID, fn.SeriesNumber,fn.SeriesDescription]   #Output information want to display (file name and series descr tag)
-            print(a)
-            f.writelines("%s\n" % a)          #Saves results in text file
+            try:
+                file_path = os.path.join(path, file)  #Joins file to path statement
+                fn = pydicom.dcmread(file_path)
+                a = [fn.PatientName, fn.PatientID, fn.SeriesNumber,fn.SeriesDescription]   #Output information want to display (file name and series descr tag)
+                f.writelines("%s\n" % a)          #Saves results in text file
+            except:
+                pass
+        else:
+            continue
 
 print('done writing into file')
-print(f)
+
+
+uniqlines = set(open(output_file).readlines())
+bar = open(output_file, 'w').writelines(uniqlines)
