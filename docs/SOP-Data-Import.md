@@ -255,7 +255,7 @@ ISCV is a PACS which is in use for foetal cardiology at GSTT. It differs from Se
 of ISCV in the same way as they are to Sectra - there are faux accession numbers that you will see if you try and import some data but they consist of the date of scan and some
 other numbers and are not reliably useful for data fetching. Instead, patient ID and study date must be used to locate images. PACS id for ISCV is 2.
 
-To downloads ISCV data in bulk, first upload your csv file to ``/home/xnat-data/xnat/scripts/import-dqr/`` as above. Then run
+To downloads ISCV data in bulk, first upload your csv file to ``/xnat-data/xnat/scripts/import-dqr/`` as above. Then run
 
 ``./import-tester-ISCV.sh CSV_NAME.csv PROJECT_ID 2 US``
 
