@@ -57,9 +57,12 @@ def send_lunit_data(session, experiment, pacs):
                     except Exception as e:
                         with open("failed_sends.txt", "a") as myfile:
                             myfile.write(scan.uri)
+                        time.sleep(delay)
                         continue
                     break
-
+            # should only reach here if number of retries exceeded
+            with open("failed_sends.txt", "a") as myfile:
+                myfile.write(scan.uri)
 
 if __name__ == '__main__':
 
