@@ -80,7 +80,7 @@ def send_lunit_data(session, experiment, pacs):
             else:
                 logging.info(f'\t\tFAILED all attempts - moving on {scan.uri}')
                 with open("failed_sends.txt", "a") as myfile:
-                    myfile.write(scan.uri)
+                    myfile.write(scan.uri + "\n")
 
         # we failed all the attempts - deal with the consequences.
 
