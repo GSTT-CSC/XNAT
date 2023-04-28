@@ -46,23 +46,24 @@ def send_lunit_data(session, experiment, pacs):
     else:
         for scan in experiment.scans.values():
             n_attempts = 3
-            for i in range(0, n_attempts):
-                while True:
-                    try:
-                        logging.info(f'\t\tExporting scan to destination: {scan.uri} - attempt {i}')
-                        response = session.put('/xapi/dqr/export/',
-                                               query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
-                        logging.debug(response)
-                        time.sleep(delay)
-                    except Exception as e:
+            attempt = 0
+            while attempt <= n_attempts:
+                try:
+                    logging.info(f'\t\tExporting scan to destination: {scan.uri} - attempt {attempt}')
+                    response = session.put('/xapi/dqr/export/',
+                                           query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
+                    logging.debug(response)
+                    time.sleep(delay)
+                except Exception as e:
+                    attempt = attempt + 1
+                    time.sleep(delay)
+                    if attempt == n_attempts:
+                        logging.info(f'\t\tFAILED : {scan.uri}')
                         with open("failed_sends.txt", "a") as myfile:
                             myfile.write(scan.uri)
-                        time.sleep(delay)
+                    else:
                         continue
-                    break
-            # should only reach here if number of retries exceeded
-            with open("failed_sends.txt", "a") as myfile:
-                myfile.write(scan.uri)
+
 
 if __name__ == '__main__':
 
