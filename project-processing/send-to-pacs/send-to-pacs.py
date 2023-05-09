@@ -68,7 +68,7 @@ def send_lunit_data(session, experiment, pacs):
                 #         else:
                 #             continue
                 #     break
-                for attempt in range(3):
+                for attempt in range(2):
                     try:
                         logging.info(f'\t\tExporting scan to destination: {scan.uri} - attempt {attempt}')
                         response = session.put('/xapi/dqr/export/',
