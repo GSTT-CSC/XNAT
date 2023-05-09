@@ -46,8 +46,9 @@ def send_lunit_data(session, experiment, pacs):
     if False:
         pass
     else:
-        for scan in experiment.scans:
-            if not isinstance(experiment.scans[scan], ImageScanData):
+        for scan_i in experiment.scans:
+            scan = experiment.scans[scan_i]
+            if not isinstance(scan, ImageScanData):
                 logging.info(f'Data {scan} not type ImageScanData')
             else:
                 # n_attempts = 3
@@ -78,7 +79,7 @@ def send_lunit_data(session, experiment, pacs):
                         logging.debug(response)
                         time.sleep(delay)
                     except Exception as e:
-                        logging.info(f'\t\tFAILED RETRYING: {scan.uri}')
+                        logging.info(f'\t\tFAILED RETRYING: {scan.uri} exception: {e}')
                         time.sleep(delay)
                     else:
                         break
@@ -86,8 +87,6 @@ def send_lunit_data(session, experiment, pacs):
                     logging.info(f'\t\tFAILED all attempts - moving on {scan.uri}')
                     with open("failed_sends.txt", "a") as myfile:
                         myfile.write(scan.uri + "\n")
-
-        # we failed all the attempts - deal with the consequences.
 
 
 if __name__ == '__main__':
