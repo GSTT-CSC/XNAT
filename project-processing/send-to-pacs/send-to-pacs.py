@@ -32,11 +32,15 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
             logging.info(f'Subject: {subject}')
             for experiment in subject.experiments.values():
                 logging.info(f'\tExperiment: {experiment}')
-                send_lunit_data(session, experiment, pacs)
+                try:
+                    send_lunit_data(session, experiment, pacs)
+                except Exception as e:
+                    with open("failed_sends.txt", "a") as myfile:
+                        myfile.write(experiment.subject_id + "\n")
 
 
 def send_lunit_data(session, experiment, pacs):
-    # check if any series called '99999999' is already in session
+    check if any series called '99999999' is already in session
     if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
         logging.info(f'\t\tLunit data already available in {experiment}')
         pass
@@ -83,7 +87,7 @@ def send_lunit_data(session, experiment, pacs):
                 else:
                     logging.info(f'\t\tFAILED all attempts - moving on {scan.uri}')
                     with open("failed_sends.txt", "a") as myfile:
-                        myfile.write(scan.uri + "\n")
+                        myfile.write(experiment.subject_id + "\n")
 
 
 if __name__ == '__main__':
