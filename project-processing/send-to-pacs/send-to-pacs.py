@@ -40,7 +40,7 @@ def send_to_pacs(xnat_configuration: dict, destination: str, delay: int = 10):
 
 
 def send_lunit_data(session, experiment, pacs):
-    check if any series called '99999999' is already in session
+    # check if any series called '99999999' is already in session
     if any('99999999' in x for x in [scan.id for scan in experiment.scans.values()]):
         logging.info(f'\t\tLunit data already available in {experiment}')
         pass
