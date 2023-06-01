@@ -2,7 +2,7 @@ import argparse
 import re
 import os
 import xnat
-import tqdm
+from tqdm import tqdm
 import logging
 import time
 import yaml
@@ -25,7 +25,7 @@ def send_to_pacs(config):
 
         project = session.projects[config['xnat']['project_id']]
 
-        for subject in project.subjects.values():
+        for subject in tqdm(project.subjects.values()):
             logging.debug(f'Subject: {subject}')
             # Add subject level inclusion/exclusion criteria here
             for experiment in subject.experiments.values():
