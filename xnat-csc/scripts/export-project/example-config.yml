@@ -1,0 +1,11 @@
+xnat:
+  user: admin
+  password: ${XNAT_PASSWORD}
+  url: http://localhost/
+  project_id: scaphoidfracturesxray
+destination:
+  name: horos
+settings:
+  delay: 3
+  attempts: 3
+  failure_log: failed_to_send.txt
