@@ -9,6 +9,7 @@ settings:
   delay: 3
   attempts: 3
   failure_log: failed_to_send.txt
+  complete_log: successfully_sent.txt
 criteria:
   inclusion:
     scan:
@@ -27,4 +28,3 @@ criteria:
           - sag_t2_fs_flair_spc
           - t2_FLAIR_COR
           - ax_swi_ge3d
-          - Oblique

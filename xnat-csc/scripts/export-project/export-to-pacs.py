@@ -43,6 +43,9 @@ def send_to_pacs(config):
                         try:
                             response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
                             logging.debug(response)
+                            if 'complete_log' in config['settings']:
+                                with open(config['settings']['complete_log'], "a") as f:
+                                    f.write(f"{subject},{experiment},{scan}\n")
                         except Exception as e:
                             last_e = e
                             logging.warning(f'RETRYING - {attempt+1}; exception: {e}')
@@ -66,6 +69,7 @@ def check_criteria(xnat_obj, criteria) -> bool:
         return True
     else:
         return False
+
 
 def parse_config_yml(yml_path):
     path_matcher = re.compile(r'\$\{([^}^{]+)}')
