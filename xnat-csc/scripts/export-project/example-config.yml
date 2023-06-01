@@ -12,3 +12,19 @@ settings:
 criteria:
   inclusion:
     scan:
+      - field: series_description
+        value:
+          - SWI_Images
+          - ax_dwi_fs_epi_DFC_TRACEW
+          - ax_dwi_fs_resolve_TRACEW
+          - ax_dwi_epi_DFC_TRACEW
+          - cor_t2_flair_tse_repeat
+          - cor_t2_flair_tse_rpt
+          - sag_t2_flair_fs_space
+          - sag_t2_flair_fs_spc
+          - sag_t2_flair_tse
+          - sag_t2_fs_flair_space
+          - sag_t2_fs_flair_spc
+          - t2_FLAIR_COR
+          - ax_swi_ge3d
+          - Oblique

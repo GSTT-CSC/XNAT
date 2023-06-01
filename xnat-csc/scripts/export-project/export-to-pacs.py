@@ -28,13 +28,18 @@ def send_to_pacs(config):
         for subject in tqdm(project.subjects.values()):
             logging.debug(f'Subject: {subject}')
             # Add subject level inclusion/exclusion criteria here
+
             for experiment in subject.experiments.values():
                 logging.debug(f'\tExperiment: {experiment}')
                 # Add experiment level inclusion/exclusion criteria here
+
                 for scan in experiment.scans.values():
                     logging.debug(f'\tScan: {experiment}')
                     # Add scan level inclusion/exclusion criteria here
-                    for attempt in range(config['settings']['attempts']):
+                    if not check_criteria(scan, config['criteria']['inclusion']['scan']):
+                        continue
+
+                    for attempt in range(config['settings']['attempts'] if 'attempts' in config['settings'] else 1):
                         try:
                             response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
                             logging.debug(response)
@@ -51,6 +56,16 @@ def send_to_pacs(config):
                             with open(config['settings']['failure_log'], "a") as f:
                                 f.write(f"{subject},{experiment},{scan},{last_e}\n")
 
+
+def check_criteria(xnat_obj, criteria) -> bool:
+    for condition in criteria:
+        values = list(condition['value'])
+        state = [xnat_obj.data[condition['field']] == val for val in values]
+
+    if any(state):
+        return True
+    else:
+        return False
 
 def parse_config_yml(yml_path):
     path_matcher = re.compile(r'\$\{([^}^{]+)}')
