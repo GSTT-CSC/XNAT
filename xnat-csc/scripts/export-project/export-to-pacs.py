@@ -11,6 +11,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 def send_to_pacs(config):
+    """
+    Sends an XNAt project to pacs using the configuration information stored in config
+    :param config:
+    :return:
+    """
 
     with xnat.connect(server=config['xnat']['url'],
                       user=config['xnat']['user'],
@@ -36,39 +41,68 @@ def send_to_pacs(config):
                 for scan in experiment.scans.values():
                     logging.debug(f'\tScan: {experiment}')
                     # Add scan level inclusion/exclusion criteria here
-                    if not check_criteria(scan, config['criteria']['inclusion']['scan']):
-                        continue
 
                     for attempt in range(config['settings']['attempts'] if 'attempts' in config['settings'] else 1):
                         try:
+                            if not check_criteria(scan, config['criteria']['inclusion']['scan']):
+                                break
                             response = session.put('/xapi/dqr/export/', query={'pacsId': pacs['id'], 'session': experiment.id, 'scansToExport': scan.id})
                             logging.debug(response)
                             if 'complete_log' in config['settings']:
                                 with open(config['settings']['complete_log'], "a") as f:
                                     f.write(f"{subject},{experiment},{scan}\n")
+
+                        except InclusionException as e:
+                            # If inclusion criteria raises exception no need to retry
+                            last_e = e
+                            logging.warning(f"FAILED after {attempt} attempts: {subject}, {experiment}, {scan}; exception: {last_e}")
+                            log_failures(f"{subject},{experiment},{scan},{last_e}", config)
+                            break
+
                         except Exception as e:
+                            # all other exceptions result in retries
                             last_e = e
                             logging.warning(f'RETRYING - {attempt+1}; exception: {e}')
+
                         else:
                             break
+
                         finally:
                             time.sleep(config['settings']['delay'])
+
                     else:
+                        # all attempts failed
                         logging.warning(f"FAILED after {config['settings']['attempts']} attempts: {subject}, {experiment}, {scan}; exception: {last_e}")
-                        if 'failure_log' in config['settings']:
-                            with open(config['settings']['failure_log'], "a") as f:
-                                f.write(f"{subject},{experiment},{scan},{last_e}\n")
+                        log_failures(f"{subject},{experiment},{scan},{last_e}", config)
+
+
+class InclusionException(Exception):
+    """There was an error assessing this file against inclusion criteria"""
+
+
+def log_failures(msg, config):
+    if 'failure_log' in config['settings']:
+        with open(config['settings']['failure_log'], "a") as f:
+            f.write(f"{msg}\n")
 
 
 def check_criteria(xnat_obj, criteria) -> bool:
-    for condition in criteria:
-        values = list(condition['value'])
-        state = [xnat_obj.data[condition['field']] == val for val in values]
-
-    if any(state):
-        return True
-    else:
-        return False
+    """
+    Checks the criteria against the xnat_obj - if any condition evaluates to True the function returns True
+    :param xnat_obj:
+    :param criteria:
+    :return:
+    """
+    try:
+        for condition in criteria:
+            values = list(condition['value'])
+            state = [xnat_obj.data[condition['field']] == val for val in values]
+        if any(state):
+            return True
+        else:
+            return False
+    except Exception as e:
+        raise InclusionException(f'There was an error assessing this file against inclusion criteria {e}')
 
 
 def parse_config_yml(yml_path):
