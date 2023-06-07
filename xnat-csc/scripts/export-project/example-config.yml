@@ -13,7 +13,7 @@ settings:
 criteria:
   inclusion:
     scan:
-      - field: series_descriptio
+      - field: series_description
         value:
           - SWI_Images
           - ax_dwi_fs_epi_DFC_TRACEW
