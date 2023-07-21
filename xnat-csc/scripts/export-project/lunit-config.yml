@@ -1,0 +1,22 @@
+xnat:
+  user: admin
+  password: ${XNAT_PASSWORD}
+  url: http://localhost/
+  project_id: Lunit2
+destination:
+  name: horos
+settings:
+  delay: 1
+  attempts: 2
+  failure_log: failed_to_send.txt
+  complete_log: successfully_sent.txt
+criteria:
+  inclusion:
+    scan:
+      - field: frames
+        value:
+          - 1
+  exclusion:
+    experiment:
+      - field: Scan
+        value: 99999999
