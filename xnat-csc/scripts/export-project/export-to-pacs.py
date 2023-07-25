@@ -30,7 +30,7 @@ def send_to_pacs(config):
 
         project = session.projects[config["xnat"]["project_id"]]
 
-        for subject in tqdm(project.subjects.values()):
+        for subject in tqdm(project.subjects[::-1]):
             logging.debug(f"Subject: {subject}")
             # Add subject level inclusion/exclusion criteria here
 
