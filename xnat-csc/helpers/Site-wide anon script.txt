@@ -11,8 +11,8 @@ version "6.3"
 
 removeAllPrivateTags
 
-(0010,0010) := (0008,0032)  //Replace patient name with acquisition time as placeholder
-//(0010,0020) := (0008,0032)  //Replace patient ID with acquisition time as placeholder
+(0010,0010) := (0008,0032)  // Replace patient name with acquisition time as placeholder
+//(0010,0020) := (0008,0032)  // Replace patient ID with acquisition time as placeholder
 
 
 // testing patient ID generation from UID
@@ -20,8 +20,8 @@ removeAllPrivateTags
 // (0010,0020) := substring [(0010,0020), 14, 24] 
 
 
-(0008,0050) := (0008,0032)  //Replace accession number with acquisition time as placeholder
-(0020,0010) := (0008,0032)  //Replace study ID with acquisition time as placeholder
+(0008,0050) := (0008,0032)  // Replace accession number with acquisition time as placeholder
+(0020,0010) := (0008,0032)  // Replace study ID with acquisition time as placeholder
 
 // Remove data as per DICOM Supp 142
 
