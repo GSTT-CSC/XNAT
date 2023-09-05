@@ -1,15 +1,15 @@
-// GSTT XNAT Anonymisation/De-identification Script
-// Copyright (c) 2023, Guys and St Thomas NHS Trust
+// GSTT XNAT Anonymisation/De-identification Project-Specific Script
+// Copyright (c) 2023, Guys and St Thomas NHS Trust (GSTT)
 // All Rights Reserved
-// This  script was written in September 2023 2020 to suit the needs of GSTT and conforms to the DICOM Supplement 142
-// It aims to de-identify all DICOM data uploaded to XNAT.
-// It retains patients age, size, weight, ethnic group, smoking status, pregnancy status and sex neutered status.
-// The manufacturer-specific DICOM data is not altered by this script.
+// This script was written in September 2023 to suit the needs of GSTT and conforms to the DICOM Supplement 142
+// It aims to de-identify all DICOM data uploaded to XNAT
+// It retains patients age, size, weight, ethnic group, smoking status, pregnancy status and sex neutered status
+// The manufacturer-specific DICOM data is not altered by this script
 // For further reference, please see https://wiki.xnat.org/xnat-tools/dicomedit and https://bitbucket.org/xnatdcm/dicom-edit6/src/master/src/main/resources/dicomedit.script.example
 
 version "X.x" // Define DicomEdit version e.g., 6.5 for use in XNAT v1.8.7
 
-retainPrivateTags["(0101,{TEST}9B)"] // Remove all private tags except those in the TEST block of group 0101.
+retainPrivateTags["(0101,{TEST}9B)"] // Remove all private tags except those in the TEST block of group 0101
 
 // USER-DEFINED VARIABLES
 
