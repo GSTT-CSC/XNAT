@@ -1,0 +1,3 @@
+xnat
+pyyaml
+tqdm

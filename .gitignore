@@ -3,3 +3,5 @@
 data/
 .DS_Store
 *.csv
+/xnat-csc/scripts/export-project/venv/
+/xnat-csc/scripts/export-project/failed_to_send.txt
