@@ -330,11 +330,12 @@ delete["(0033,1013)"] // Removes private Siemens tags
 (300A,0013) := hashUID[(300A,0013)] // HashUID used to replace the Dose Reference UID
 
 // TAGS TO BE ASSIGNED SHIFTED DATE VALUES (NUMBER OF DAYS SET ABOVE)
-(0008,0021) := shiftDateByIncrement[(0008,0021), NUMBEROFDAYSTOBESHIFTED] // Change Series Date
-(0008,002A) := shiftDateByIncrement[(0008,002A), NUMBEROFDAYSTOBESHIFTED] // Change Acquisition DateTime
-(0008,0022) := shiftDateByIncrement[(0008,0022), NUMBEROFDAYSTOBESHIFTED] // Change Acquisition Date
 (0008,0020) := shiftDateByIncrement[(0008,0020), NUMBEROFDAYSTOBESHIFTED] // Change Study Date
+(0008,0021) := shiftDateByIncrement[(0008,0021), NUMBEROFDAYSTOBESHIFTED] // Change Series Date
+(0008,0022) := shiftDateByIncrement[(0008,0022), NUMBEROFDAYSTOBESHIFTED] // Change Acquisition Date
 (0008,0023) := shiftDateByIncrement[(0008,0023), NUMBEROFDAYSTOBESHIFTED] // Change Content Date
+# TODO: Find out why shiftDateTimeByIncrement isn't working
+(0008,002A) := shiftDateByIncrement[(0008,002A), NUMBEROFDAYSTOBESHIFTED] // Change Acquisition DateTime
 (0040,0244) := shiftDateByIncrement[(0008,0244), NUMBEROFDAYSTOBESHIFTED] // Change Performed Procedure Step Start Date
 
 // TAGS TO BE ASSIGNED A DUMMY VALUE
