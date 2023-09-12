@@ -137,9 +137,9 @@ In both of the above methods, all other data in the DICOM headers is removed, ch
 
 The manipulation of the DICOM data for the purpose of de-identification follows the [DICOM Standards Supplement 142](https://www.dicomstandard.org/News-dir/ftsup/docs/sups/sup142.pdf), which specifies which tags should be removed, replaced, or manipulated to ensure traceability to individual from the data shared is not possible.
 
-* [Site-wide anonymisation script](https://github.com/GSTT-CSC/XNAT/blob/main/anonymisation/Site-wide%20anon%20script.txt)
+* [Site-wide anonymisation script](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/resources/site_anon_script.script.example)
 
-* [Project-level anonymisation script](https://github.com/GSTT-CSC/XNAT/blob/main/anonymisation/Project-specific%20anon%20script.txt)
+* [Project-level anonymisation script](https://github.com/GSTT-CSC/XNAT/blob/main/xnat-csc/resources/project_anon_script.script.example)
 
 ### Data access and storage
 The project owner has the reading, writing, updating and deleting rights of all data they own. They can grant access to other users to either view-only or modify the existing data. Data can also be shared between projects as read-only.
