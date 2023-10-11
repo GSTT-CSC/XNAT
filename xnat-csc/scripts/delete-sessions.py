@@ -7,6 +7,7 @@
 # python3 delete-sessions.py config.yml
 # This script is interruptable with ctrl + c. It will delete subjects one at a time
 
+
 import xnat
 import logging
 import time
