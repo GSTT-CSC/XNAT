@@ -1,5 +1,5 @@
 # This script allows you to delete large projects on XNAT one subject at a time. You will need this file
-# and a config.yml file to do so. The config.yml example is stored in helpers/config in XNAT repo.
+# and a config.yml file to do so. The config.yml example is stored in xnat-csc/src/delete/config in XNAT repo.
 # You will need to run this from the terminal. First set your XNAT password as an environment variable with command
 # export XNAT_PASSWORD=yourpassword
 # Then update the config.yml with your xnat username and your project ID
