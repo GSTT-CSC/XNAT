@@ -215,12 +215,12 @@ NUMBEROFDAYSTOBESHIFTED := "X" // Set X number of days for dates to be shifted (
 -(4008,4000) // Remove Results Comments
 
 // Removal of private tags amended for XNAT 1.8.3
-delete[ "(0040,1001)" ] // Removes Philips date tags
-delete[ "(0040,2004)" ] // Removes Philips date tags
-delete[ "(2001,10CB)" ] // Removes private Philips tags
-delete[ "(2001,1100)" ] // Removes private Philips tags
-delete[ "(2001,9001)" ] // Removes private Philips tags
-delete[ "(2005,140F)" ] // Removes private Philips tags
+delete["(0040,1001)"] // Removes Philips date tags
+delete["(0040,2004)"] // Removes Philips date tags
+delete["(2001,10CB)"] // Removes private Philips tags
+delete["(2001,1100)"] // Removes private Philips tags
+delete["(2001,9001)"] // Removes private Philips tags
+delete["(2005,140F)"] // Removes private Philips tags
 delete["(0033,100E)"] // Removes private Siemens tags
 delete["(0033,1013)"] // Removes private Siemens tags
 
