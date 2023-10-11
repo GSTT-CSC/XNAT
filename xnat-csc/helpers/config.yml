@@ -1,0 +1,5 @@
+xnat:
+  user: XNATUSERNAME
+  password: ${XNAT_PASSWORD}
+  url: http://localhost/
+  project_id: XNAT PROJECT ID
