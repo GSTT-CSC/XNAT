@@ -238,7 +238,7 @@ such that ``105:8105`` is enabled. If that is not the case, follow the procedure
 For this script you need to put your csv into ``/home/xnat-data/xnat/scripts/import-dqr/`` folder. You can either use WinSCP to get it there or 
 use ``wget`` as described in the previous section. Then type in ``cd`` which will take you back to hnadmin home, then run
 
-``./import-tester.sh CSV_NAME.csv PROJECT_ID PACS_ID MODALITY``
+``./import-via-restapi.sh CSV_NAME.csv PROJECT_ID PACS_ID``
 
 Where 'modality' is whatever the main modality in your dataset is. Once you press enter to run it, you'll see the screen become populated
 with the contents of your csv file (accession numbers, subject ids, session ids). Please note that this may take a while if you have a very large file (e.g. 1000 ultrasounds).
