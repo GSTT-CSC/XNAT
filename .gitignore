@@ -3,5 +3,6 @@
 data/
 .DS_Store
 *.csv
+!dicom_supplement_142_table_e1_1.csv
 /xnat-csc/scripts/export-project/venv/
 /xnat-csc/scripts/export-project/failed_to_send.txt
