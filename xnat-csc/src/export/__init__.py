@@ -1,1 +1,0 @@
-# Subpackage to handle export operations from XNAT e.g., sending to PACS, zipping and export to Shared drive, etc.
