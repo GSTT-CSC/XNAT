@@ -74,7 +74,7 @@ class Anonymizer:
         pass
 
     # TODO: Move pixel_cleaning.py here
-    def remove_header(self, filepath: str):
+    def remove_burnt_in_data(self, filepath: str):
         pass
 
 
