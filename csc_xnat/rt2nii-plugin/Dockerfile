@@ -9,7 +9,7 @@ RUN apt-get -y update && apt-get install -y \
 
 # Install platipy
 RUN pip install --upgrade pip && \
-    pip install git+https://github.com/tomaroberts/platipy.git@xnat-docker-image
+    pip install platipy
 
 # Copy Python script into container
 COPY run_convert_rtstruct.py /usr/local/bin
