@@ -5,7 +5,7 @@
   "version": "1.0",
   "schema-version": "1.0",
   "info-url": "None",
-  "image": "tomaroberts/xnat-rt2nii:latest",
+  "image": "ghcr.io/gstt-csc/xnat:rt2nii-plugin-latest",
   "type": "docker",
   "workdir": "/opt",
   "command-line": "run_convert_rtstruct.py /input-dcm-mount /input-rt-mount /output-mount [OUTPUT_NII_IMG_FILENAME]",
