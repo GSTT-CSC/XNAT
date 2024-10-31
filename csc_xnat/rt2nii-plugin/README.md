@@ -8,9 +8,16 @@ rt2nii enables the user to convert StructureSets within an RTSTRUCT file into in
 
 The plugin is built according to the [XNAT Container Service plugin framework](https://wiki.xnat.org/container-service/).
 
-## Clone & Use or Test rt2nii
+This plugin can be run locally, outside of XNAT, which might be useful for updating the plugin, local testing, etc. You can do this either by pulling the existing image, or cloning this repo and building from source. See below for both options.
 
-This plugin can be run locally, outside of XNAT, which might be useful for updating the plugin, local testing, etc.
+## Pull existing rt2nii Docker image
+
+You pull the existing rt2nii plugin image with:
+```shell
+docker pull ghcr.io/gstt-csc/xnat-rt2nii-plugin:latest
+```
+
+## Clone & run rt2nii
 
 Clone this repo and enter the rt2nii plugin directory:
 
