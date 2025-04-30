@@ -1,19 +1,40 @@
-// GSTT XNAT Anonymisation/De-identification Project-Specific Script
-// Copyright (c) 2023, Guys and St Thomas NHS Trust (GSTT)
+// GSTT XNAT Anonymisation/De-identification Script
+// Copyright (c) 2021, Guys and St Thomas NHS Trust
 // All Rights Reserved
-// This script was written in September 2023 to suit the needs of GSTT and conforms to the DICOM Supplement 142
-// It aims to de-identify all DICOM data uploaded to XNAT
-// It retains patients age, size, weight, ethnic group, smoking status, pregnancy status and sex neutered status
-// The manufacturer-specific DICOM data is not altered by this script
-// For further reference, please see https://wiki.xnat.org/xnat-tools/dicomedit and https://bitbucket.org/xnatdcm/dicom-edit6/src/master/src/main/resources/dicomedit.script.example
+// This  script was written in September 2023 2020 to suit the needs of GSTT and conforms to the DICOM Supplement 142
+// It aims to de-identify all DICOM data uploaded to XNAT.
+// It retains patients age, size, weight, ethnic group, smoking status, pregnancy status and sex neutered status.
+// The manufacturer-specific DICOM data is not altered by this script.
 
-version "X.x" // Define DicomEdit version e.g., 6.5 for use in XNAT v1.8.7
+version "6.6"
 
-retainPrivateTags["(0101,{TEST}9B)"] // Remove all private tags except those in the TEST block of group 0101
+// REJECTIONS
+
+imageType := (0008,0008)
+seriesDescription := (0008,103E)
+
+// NOTE: Secondary-capture images need to be cleaned post-ingestion, too
+if( imageType ~ ".*SECONDARY.*") {
+    reject[]
+}
+
+if( seriesDescription ~ ".*Patient Protocol.*") {
+    reject[]
+}
+
+if( seriesDescription ~ ".*Dose Info.*") {
+    reject[]
+}
+
+if( seriesDescription ~ ".*Dose Report.*") {
+    reject[]
+}
+
+if( seriesDescription ~ ".*Dose Record.*") {
+    reject[]
+}
 
 // USER-DEFINED VARIABLES
-
-NUMBEROFDAYSTOBESHIFTED := "X" // Set X number of days for dates to be shifted (this should be updated between projects)
 
 // TAGS TO BE ASSIGNED PROJECT-SPECIFIC VALUES
 
@@ -21,15 +42,21 @@ NUMBEROFDAYSTOBESHIFTED := "X" // Set X number of days for dates to be shifted (
 (0010,0010) := subject // Set Patient Name as Subject ID given at DQR
 (0010,0020) := subject // Set Patient ID as Subject ID given at DQR
 (0008,0050) := session // Set Accession Number as Session ID given at DQR
-(0020,0010) := concatenate[session," Study"] // Set Study ID to combination of Session ID and "Study"
+(0020,0010) := session // Set Study ID to Session ID
+
+(0008,0020) := shiftDateTimeByIncrement[(0008,0020), "4", "days"] // Change Study Date
+(0008,0021) := (0008,0020) // Series Date
+(0008,0022) := (0008,0020) // Acquisition Date
+(0008,0023) := (0008,0020) // Content Date
+(0008,0012) := (0008,0020)
+(0040,0244) := (0008,0020)
 
 // TAGS TO BE REMOVED
 
 //-(0000,1000) // Remove Affected SOP Instance UID
 -(0008,0012) // Remove Instance Creation Date
 -(0008,0013) // Remove Instance Creation Time
-# TODO: Find out why shiftDateTimeByIncrement isn't working
--(0008,002A) // Remove Acquisition Datetime
+-(0008,002A)  // Remove Acquisition Datetime
 -(0008,0024) // Remove Overlay Date
 -(0008,0025) // Remove Curve Date
 -(0008,0031) // Remove Series Time
@@ -221,8 +248,14 @@ delete[ "(2001,10CB)" ] // Removes private Philips tags
 delete[ "(2001,1100)" ] // Removes private Philips tags
 delete[ "(2001,9001)" ] // Removes private Philips tags
 delete[ "(2005,140F)" ] // Removes private Philips tags
-delete["(0033,100E)"] // Removes private Siemens tags
-delete["(0033,1013)"] // Removes private Siemens tags
+delete["(0033,100E)"] // TODO: Which manufacturer's private tag is this? See project-specific anon script on repo.
+delete["(0033,1013)"] // TODO: Which manufacturer's private tag is this? See project-specific anon script on repo.
+
+// Removal of private tags
+delete[ "(0009,1101)" ] // Removes private Philips(?) tags (seems to contain accession number)
+delete[ "(0009,110B)" ] // Removes private Philips(?) tags (seems to contain clinical free text)
+delete[ "(0009,1001)" ] // Removes private Philips(?) tags (seems to contain accession number)
+delete[ "(0009,100B)" ] // Removes private Philips(?) tags (seems to contain clinical free text)
 
 // Removal of MRI-specific data in case it isn't removed at first iteration
 -(0008,0012) // Remove Referenced Texture Sequence Attribute
@@ -266,7 +299,7 @@ delete["(0033,1013)"] // Removes private Siemens tags
 -(0018,1012) // Remove Date of Secondary Capture
 -(0018,1014) // Remove Time of Secondary Capture
 
-// TEMPORARY FIX FOR TAGS TO BE ASSIGNED A BLANK VALUE (SEE BELOW)
+// TODO: Find out why empty strings isn't accepted in DicomEdit in XNAT v1.8.7
 -(0040,A073) // Remove Verifying Observer Sequence
 -(0040,A075) // Remove Verifying Observer Name
 -(0040,A123) // Remove Person Name
@@ -281,9 +314,10 @@ delete["(0033,1013)"] // Removes private Siemens tags
 -(0008,0033) // Remove Content Time
 -(0018,0010) // Remove Contrast Bolus Agent
 
+
 // TAGS TO BE ASSIGNED A BLANK VALUE
 
-// TODO: Find out why we're unable to assign empty strings i.e., "", in XNAT v1.8.7
+// TODO: Find out why empty strings isn't accepted in DicomEdit in XNAT v1.8.7
 //(0040,A073) := "" // Empty field replaces the Verifying Observer Sequence
 //(0040,A075) := "" // Empty field replaces the Verifying Observer Name
 //(0040,A123) := "" // Empty field replaces the Person Name
@@ -300,7 +334,7 @@ delete["(0033,1013)"] // Removes private Siemens tags
 
 // TAGS TO BE ASSIGNED HASHED VERSIONS OF THEIR ORIGINAL VALUES
 
-// IMPORTANT: DO NOT HASH SOP Instance UID (0008,0018), AND OTHER SOP-RELATED INSTANCE UIDS, AS THIS MAY BREAK SCAN WHEN USERS TRY TO OPEN/PROCESS IT
+// DO NOT HASH SOP Instance UID (0008,0018) AS THIS MAY BREAK SCAN WHEN USERS TRY TO OPEN/PROCESS IT.
 
 //(0002,0002) := hashUID[(0002,0002)] // HashUID used to replace Media Storage SOP Class UID
 //(0002,0003) := hashUID[(0002,0003)] // HashUID used to replace the Media Storage SOP Instance UID
@@ -332,13 +366,10 @@ delete["(0033,1013)"] // Removes private Siemens tags
 (300A,0013) := hashUID[(300A,0013)] // HashUID used to replace the Dose Reference UID
 
 // TAGS TO BE ASSIGNED SHIFTED DATE VALUES (NUMBER OF DAYS SET ABOVE)
-(0008,0020) := shiftDateByIncrement[(0008,0020), NUMBEROFDAYSTOBESHIFTED] // Change Study Date
-(0008,0021) := shiftDateByIncrement[(0008,0021), NUMBEROFDAYSTOBESHIFTED] // Change Series Date
-(0008,0022) := shiftDateByIncrement[(0008,0022), NUMBEROFDAYSTOBESHIFTED] // Change Acquisition Date
-(0008,0023) := shiftDateByIncrement[(0008,0023), NUMBEROFDAYSTOBESHIFTED] // Change Content Date
-(0040,0244) := shiftDateByIncrement[(0008,0244), NUMBEROFDAYSTOBESHIFTED] // Change Perf ormed Procedure Step Start Date
+
+
 
 // TAGS TO BE ASSIGNED A DUMMY VALUE
 
 // Transformation of modality-specific tags that, depending on manufacturer, often contain dates, times, etc.
-(0018,1078) := concatenate["20000101", (0018,1072)] // PET radio-pharmaceutical date amended, time preserved.
+//(0018,1078) := concatenate["20000101", (0018,1072)] // PET radio-pharmaceutical date amended, time preserved.
