@@ -1,0 +1,42 @@
+# 25062026 Last updated by Kristina Zeljic
+
+FORMAT dicom
+
+%filter whitelist
+
+LABEL Marked as Clean Catch All # (Vanessa Sochat)
+  contains BurnedInAnnotation No
+
+%filter graylist
+
+# Coordinates from fields:
+
+#LABEL Blank Image
+    #coordinates all
+
+LABEL Clean Ultrasound Regions
+    present SequenceOfUltrasoundRegions
+    keepcoordinates from:SequenceOfUltrasoundRegions
+
+LABEL LightSpeed Dose Report # (Susan Weber)
+  contains ManufacturerModelName LightSpeed VCT
+  + contains Modality CT
+  + contains ImageType SCREEN SAVE || contains SeriesDescription Dose
+  coordinates 0,0,512,121
+
+LABEL GE Overlay
+  contains Manufacturer GE
+  coordinates 0,0,1600,120
+
+LABEL Siemens Overlay
+  contains Manufacturer Siemens
+  coordinates 0,0,1000,55
+
+LABEL Hitachi Overlay
+  contains Manufacturer Hitachi
+  coordinates 0,0,1024,77
+
+LABEL Philips Overlay
+  contains Manufacturer Philips
+  coordinates 0,0,1023,75
+
