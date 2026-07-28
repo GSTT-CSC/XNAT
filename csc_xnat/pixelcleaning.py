@@ -48,33 +48,33 @@ for root, folders, files in os.walk(base):
 
 # skip already processed data
      if root.startswith(clean_root):
-        continue
+       continue
      for file in files:
-        fullpath = os.path.abspath(os.path.join(root, file))
-        print(fullpath)
+       fullpath = os.path.abspath(os.path.join(root, file))
+       print(fullpath)
 
 # skip non-DICOM files
         if not file.lower().endswith('.dcm'):
-            continue
+          continue
 
 # mirror folder structure
         try:
-            relative_path = os.path.relpath(root, base)
-            clean_folder = os.path.join(clean_root, relative_path)
-            os.makedirs(clean_folder, exist_ok=True)
+          relative_path = os.path.relpath(root, base)
+          clean_folder = os.path.join(clean_root, relative_path)
+          os.makedirs(clean_folder, exist_ok=True)
 
-            # create cleaner
-            clientcustom = DicomCleaner(
-            output_folder=clean_folder,
-            deid=deid_path
-                )
+          # create cleaner
+          clientcustom = DicomCleaner(
+          output_folder=clean_folder,
+          deid=deid_path
+              )
 
 # read DICOM
-            ds = pydicom.dcmread(fullpath)
+          ds = pydicom.dcmread(fullpath)
 
 # handle RGB images
             if getattr(ds, 'PhotometricInterpretation', '') == 'RGB':
-                print("RGB detected, converting to grayscale before cleaning...")
+              print("RGB detected, converting to grayscale before cleaning...")
                 gray = (
                     0.299*ds.pixel_array[...,0]
                     + 0.587*ds.pixel_array[...,1]
