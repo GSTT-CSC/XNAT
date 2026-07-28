@@ -43,59 +43,59 @@ deid_path = os.path.join(script_dir, "bash", "deid.custom")
 # --------------------- Output root----------------------------------
 clean_root=base + '/clean/'
 
-#  ---------------------- Main de.id loop----------------------------
+#  ---------------------- Main de.id loop----------------------------
 for root, folders, files in os.walk(base):
-
-# skip already processed data
-     if root.startswith(clean_root):
-       continue
-     for file in files:
-       fullpath = os.path.abspath(os.path.join(root, file))
-       print(fullpath)
-
-# skip non-DICOM files
-        if not file.lower().endswith('.dcm'):
-          continue
-
-# mirror folder structure
-        try:
-          relative_path = os.path.relpath(root, base)
-          clean_folder = os.path.join(clean_root, relative_path)
-          os.makedirs(clean_folder, exist_ok=True)
-
-          # create cleaner
-          clientcustom = DicomCleaner(
-          output_folder=clean_folder,
-          deid=deid_path
-              )
-
-# read DICOM
-          ds = pydicom.dcmread(fullpath)
-
-# handle RGB images
-            if getattr(ds, 'PhotometricInterpretation', '') == 'RGB':
-              print("RGB detected, converting to grayscale before cleaning...")
-                gray = (
-                    0.299*ds.pixel_array[...,0]
-                    + 0.587*ds.pixel_array[...,1]
-                    + 0.114*ds.pixel_array[...,2]
-                ).astype(ds.pixel_array.dtype)
-                ds.PixelData = gray.tobytes()
-                ds.PhotometricInterpretation = 'MONOCHROME2'
-                ds.SamplesPerPixel = 1
-
-# overwrites original
-                ds.save_as(fullpath)
-
-# run cleaning
-            result = clientcustom.detect(fullpath)
-            print(result)
-
-            clientcustom.clean()
-            clientcustom.save_dicom()
-            print('done custom clean')
-
-        except Exception as e:
-            print("Error:", e)
-            continue
+ 
+    # skip already processed data
+    if root.startswith(clean_root):
+        continue
+ 
+    for file in files:
+        fullpath = os.path.abspath(os.path.join(root, file))
+        print(fullpath)
+ 
+        # skip non-DICOM files
+        if not file.lower().endswith('.dcm'):
+            continue
+ 
+        # mirror folder structure
+        try:
+            relative_path = os.path.relpath(root, base)
+            clean_folder = os.path.join(clean_root, relative_path)
+            os.makedirs(clean_folder, exist_ok=True)
+ 
+            # create cleaner
+            clientcustom = DicomCleaner(
+                output_folder=clean_folder,
+                deid=deid_path
+            )
+ 
+            # read DICOM
+            ds = pydicom.dcmread(fullpath)
+ 
+            # handle RGB images
+            if getattr(ds, 'PhotometricInterpretation', '') == 'RGB':
+                print("RGB detected, converting to grayscale before cleaning...")
+                gray = (
+                    0.299 * ds.pixel_array[..., 0]
+                    + 0.587 * ds.pixel_array[..., 1]
+                    + 0.114 * ds.pixel_array[..., 2]
+                ).astype(ds.pixel_array.dtype)
+                ds.PixelData = gray.tobytes()
+                ds.PhotometricInterpretation = 'MONOCHROME2'
+                ds.SamplesPerPixel = 1
+                # overwrites original
+                ds.save_as(fullpath)
+ 
+            # run cleaning
+            result = clientcustom.detect(fullpath)
+            print(result)
+            clientcustom.clean()
+            clientcustom.save_dicom()
+            print('done custom clean')
+ 
+        except Exception as e:
+            print("Error:", e)
+            continue
+ 
 print('all done now')
