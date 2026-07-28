@@ -29,12 +29,12 @@ import numpy as np
 
 # -------------------------Input handling--------------------------
 if len(sys.argv) == 2:
-    base = sys.argv[1]
+  base = sys.argv[1]
 else:
-    base = input("Enter the input directory containing DICOM files: ").strip()
+  base = input("Enter the input directory containing DICOM files: ").strip()
 
 if not os.path.isdir(base):
-    raise ValueError(f"Invalid directory: {base}")
+  raise ValueError(f"Invalid directory: {base}")
 
 # ------------ Finding de.id file (same folder as script)-----------
 script_dir = os.path.dirname(os.path.abspath(__file__))
